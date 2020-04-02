@@ -176,6 +176,12 @@
                 android:text="UserInfo"
                 android:textSize="15dp" />
         </LinearLayout>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Log Out"
+            android:onClick="clickFunction"
+            />
 
 
     </LinearLayout>

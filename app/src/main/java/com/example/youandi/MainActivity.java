@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void goToAct2(){
-        Intent intent = new Intent(this, Main2Activity.class);
+        Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
     }
 }
