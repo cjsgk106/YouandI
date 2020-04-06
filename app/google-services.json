@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "812211693982",
+    "firebase_url": "https://youandi-b2ba3.firebaseio.com",
+    "project_id": "youandi-b2ba3",
+    "storage_bucket": "youandi-b2ba3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:812211693982:android:c1fa400f12b84f6a3c0e8f",
+        "android_client_info": {
+          "package_name": "com.example.andorid.youandi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "812211693982-jden783r1nvnm6484do9mne0n6dojq4e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.andorid.youandi",
+            "certificate_hash": "8f53b63fa240c9b627b6c679d6ac7f8150966bd0"
+          }
+        },
+        {
+          "client_id": "812211693982-ptp6hiehh8fiorqauvd8p1qln233vbl0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCo21R-ssmLKeFPDyU_HYaGNU19XspvqPw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "812211693982-ptp6hiehh8fiorqauvd8p1qln233vbl0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
