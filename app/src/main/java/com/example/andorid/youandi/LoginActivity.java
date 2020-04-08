@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
@@ -39,4 +40,15 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void clickFunction(View view){
+        goToAct1();
+
+    }
+
+    public void goToAct1(){
+        Intent intent = new Intent(this, NavigationActivity.class);
+        startActivity(intent);
+    }
+
 }

@@ -39,6 +39,7 @@
         android:layout_height="wrap_content" />
 
     <Button
+        android:onClick="clickFunction"
         android:id="@+id/loginActivity_button_signup"
         android:layout_marginTop="10dp"
         android:text="Sign Up"
