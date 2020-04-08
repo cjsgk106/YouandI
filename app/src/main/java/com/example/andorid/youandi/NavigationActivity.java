@@ -30,16 +30,16 @@ public class NavigationActivity extends AppCompatActivity {
                     selectedFragment = new HomeFragment();
                     break;
                 case R.id.nav_chat:
-                    selectedFragment = new HomeFragment();
+                    selectedFragment = new ChatFragment();
                     break;
                 case R.id.nav_album:
-                    selectedFragment = new HomeFragment();
+                    selectedFragment = new AlbumFragment();
                     break;
                 case R.id.nav_calendar:
-                    selectedFragment = new HomeFragment();
+                    selectedFragment = new CalendarFragment();
                     break;
                 case R.id.nav_location:
-                    selectedFragment = new HomeFragment();
+                    selectedFragment = new LocationFragment();
                     break;
             }
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,

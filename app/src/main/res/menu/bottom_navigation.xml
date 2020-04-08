@@ -8,20 +8,20 @@
 
     <item
         android:id="@+id/nav_chat"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="Home"/>
+        android:icon="@drawable/ic_chat_black_24dp"
+        android:title="Chat"/>
     <item
         android:id="@+id/nav_album"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="Home"/>
+        android:icon="@drawable/ic_photo_album_black_24dp"
+        android:title="Album"/>
 
     <item
         android:id="@+id/nav_calendar"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="Home"/>
+        android:icon="@drawable/ic_date_range_black_24dp"
+        android:title="Calendar"/>
 
     <item
         android:id="@+id/nav_location"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="Home"/>
+        android:icon="@drawable/ic_location_on_black_24dp"
+        android:title="Locatioin"/>
 </menu>
