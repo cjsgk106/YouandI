@@ -6,50 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".HomeFragment">
 
-    <ImageButton
-        android:id="@+id/Calendar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/Location"
-        app:layout_constraintStart_toEndOf="@+id/Album"
-        app:srcCompat="@android:drawable/ic_menu_my_calendar" />
 
-    <ImageButton
-        android:id="@+id/Chat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/Album"
-        app:layout_constraintStart_toEndOf="@+id/Home"
-        app:srcCompat="@android:drawable/sym_action_chat" />
 
-    <ImageButton
-        android:id="@+id/Location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/Calendar"
-        app:srcCompat="@android:drawable/ic_menu_mylocation" />
 
-    <ImageButton
-        android:id="@+id/Album"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_report_image" />
 
-    <ImageButton
-        android:id="@+id/Home"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/Chat"
-        app:srcCompat="?attr/homeAsUpIndicator" />
+
 
     <ImageButton
         android:id="@+id/imageButton6"
