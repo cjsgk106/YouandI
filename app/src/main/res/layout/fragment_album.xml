@@ -5,17 +5,27 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="400dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        >
+
         <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="test"
             android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:text="test"
 
             />
-
-
+        <Button
+            android:id="@+id/add_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="0dp"
+            android:text="ADD Picture" />
 
     </LinearLayout>
+
+
+
 </RelativeLayout>

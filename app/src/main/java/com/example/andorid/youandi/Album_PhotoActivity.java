@@ -2,7 +2,10 @@ package com.example.andorid.youandi;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
@@ -29,5 +32,14 @@ public class Album_PhotoActivity extends AppCompatActivity {
         gridView = (GridView) findViewById(R.id.grid_view);
 
         gridView.setAdapter(new ImageAdapter(this));
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getApplicationContext(), FullimageActivity.class);
+                intent.putExtra("id", position);
+                startActivity(intent);
+            }
+        });
     }
 }
