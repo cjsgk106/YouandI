@@ -5,10 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import java.text.DateFormat;
+import java.util.Calendar;
 
 public class CalendarFragment extends Fragment {
     @Nullable
@@ -23,6 +27,11 @@ public class CalendarFragment extends Fragment {
 
             }
         });
+
+        Calendar calendar = Calendar.getInstance();
+        String today = DateFormat.getInstance().format(calendar.getTime());
+        TextView textView = (TextView) view.findViewById(R.id.todaytext);
+        textView.setText(today);
 
     return view;
     }
