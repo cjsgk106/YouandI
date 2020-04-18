@@ -8,6 +8,7 @@
         android:layout_height="wrap_content"
         android:text="TODAY"
         android:id="@+id/todaytext"
+        android:textSize="40dp"
         />
     <CalendarView
         android:id="@+id/Calendar"
