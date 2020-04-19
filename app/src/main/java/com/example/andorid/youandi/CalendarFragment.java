@@ -1,9 +1,11 @@
 package com.example.andorid.youandi;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.TextView;
 
@@ -28,10 +30,15 @@ public class CalendarFragment extends Fragment {
             }
         });
 
-        Calendar calendar = Calendar.getInstance();
-        String today = "TODAY is :" + DateFormat.getInstance().format(calendar.getTime());
-        TextView textView = (TextView) view.findViewById(R.id.todaytext);
-        textView.setText(today);
+        Button button = view.findViewById(R.id.button);
+        button.setOnClickListener(new Button.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), Calendar_EditActivity.class);
+                startActivity(intent);
+            }
+        });
 
     return view;
     }
