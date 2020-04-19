@@ -29,7 +29,7 @@ public class CalendarFragment extends Fragment {
         });
 
         Calendar calendar = Calendar.getInstance();
-        String today = DateFormat.getInstance().format(calendar.getTime());
+        String today = "TODAY is :" + DateFormat.getInstance().format(calendar.getTime());
         TextView textView = (TextView) view.findViewById(R.id.todaytext);
         textView.setText(today);
 
