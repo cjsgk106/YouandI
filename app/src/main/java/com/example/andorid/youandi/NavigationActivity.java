@@ -18,12 +18,16 @@ public class NavigationActivity extends AppCompatActivity {
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                new HomeFragment()).commit();
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Fragment selectedFragment =  null;
+
 
             switch (item.getItemId()){
                 case R.id.nav_home:
@@ -42,6 +46,28 @@ public class NavigationActivity extends AppCompatActivity {
                     selectedFragment = new LocationFragment();
                     break;
             }
+
+            /*if(item.getItemId() == R.id.nav_home){
+                selectedFragment = new HomeFragment();
+            }
+            else if (item.getItemId() == R.id.nav_chat){
+                selectedFragment = new ChatFragment();
+            }
+            else if (item.getItemId() == R.id.nav_album){
+                selectedFragment = new AlbumFragment();
+            }
+            else if (item.getItemId() == R.id.nav_calendar){
+                selectedFragment = new CalendarFragment();
+            }
+            else if (item.getItemId() == R.id.nav_location){
+                selectedFragment = new LocationFragment();
+            }
+            else {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new HomeFragment()).commit();
+                return true;
+            }*/
+
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     selectedFragment).commit();
             return true;

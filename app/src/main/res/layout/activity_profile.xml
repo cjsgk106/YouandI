@@ -33,7 +33,7 @@
             app:layout_constraintVertical_bias="0.038" />
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/profile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
@@ -42,6 +42,13 @@
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/loading_icon"
             tools:ignore="VectorDrawableCompat" />
+
+        <Button
+            android:id="@+id/pickPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "Choose profile photo"
+            />
 
         <TextView
             android:layout_width="wrap_content"
@@ -182,6 +189,8 @@
             android:text="Log Out"
             android:onClick="clickFunction"
             />
+
+
 
 
     </LinearLayout>
