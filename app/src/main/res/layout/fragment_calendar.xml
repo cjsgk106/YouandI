@@ -20,8 +20,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/button"
-        android:text="EDIT"
+        android:text="ADD"
         />
-
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button2"
+        android:text="View Event"
+        />
 
 </LinearLayout>
