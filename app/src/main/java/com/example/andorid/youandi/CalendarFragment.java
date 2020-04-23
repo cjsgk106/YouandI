@@ -31,6 +31,16 @@ public class CalendarFragment extends Fragment {
             }
         });
 
+        Button viewButton = view.findViewById(R.id.button2);
+        viewButton.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), Calendar_EventActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
         Button button = view.findViewById(R.id.button);
         button.setOnClickListener(new Button.OnClickListener(){
 

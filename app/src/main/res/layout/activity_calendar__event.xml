@@ -7,8 +7,7 @@
     tools:context=".Calendar_EventActivity">
 
        <ListView
-        android:id="@+id/List"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
+           android:id="@+id/listview"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent" />
 </RelativeLayout>
