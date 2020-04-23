@@ -9,11 +9,15 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-
 public class Calendar_EventActivity extends AppCompatActivity {
     ArrayAdapter<String> listAdapter;
     ListView listView;
     ArrayList<String> arrayList = new ArrayList<>();
+
+    public static final String SHARED_PREF = "sharedPref";
+    public static final String text = "text";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
