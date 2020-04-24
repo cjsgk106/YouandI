@@ -37,7 +37,6 @@ public class ProfileActivity extends AppCompatActivity implements DatePickerDial
     Button btn;
     ImageView imageView;
     TextView dateText;
-    Button datebtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +46,7 @@ public class ProfileActivity extends AppCompatActivity implements DatePickerDial
         imageView = findViewById(R.id.profile);
         btn = findViewById(R.id.pickPhoto);
         dateText = findViewById(R.id.dateText);
-//        imageView.getWidth();
-//        imageView.getHeight()
+
 
         btn.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -67,6 +65,11 @@ public class ProfileActivity extends AppCompatActivity implements DatePickerDial
             }
         });
 
+    }
+
+    public void finishEdit(View view){
+        Intent intent = new Intent(this, NavigationActivity.class);
+        startActivity(intent);
     }
 
     private void showDatePickerDialog(){
@@ -110,18 +113,19 @@ public class ProfileActivity extends AppCompatActivity implements DatePickerDial
         return resizedBitmap;
     }
 
-    public void clickFunction(View view){
-        goToAct1();
-
-    }
-    public void goToAct1(){
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-    }
-
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         String date = month + "/" + dayOfMonth + "/" + year;
         dateText.setText(date);
     }
+
+    public void clickFunction(View view){
+        Intent intent = new Intent(this, NavigationActivity.class);
+        startActivity(intent);
+    }
+
+//    public void goToAct1(){
+//        Intent intent = new Intent(this, LoginActivity.class);
+//        startActivity(intent);
+//    }
 }

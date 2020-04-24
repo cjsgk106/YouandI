@@ -205,9 +205,17 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:text="Log Out"
-            android:onClick="clickFunction"
+            android:text="Finish Edit"
+            android:onClick="finishEdit"
             />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Cancel"
+            android:onClick="finishEdit"
+            />
+
 
 
 
