@@ -14,12 +14,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Calendar_EditActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
 
+    DatabaseHelper db;
     private TextView dateText;
     private static ArrayList<String> eventList;
     @Override
@@ -27,8 +29,25 @@ public class Calendar_EditActivity extends AppCompatActivity implements DatePick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar__edit);
         dateText = findViewById(R.id.dateText);
-
-
+        final TextView eventNameView = findViewById(R.id.editText);
+        final String eventName = eventNameView.getText().toString();
+        final TextView eventDateView = findViewById(R.id.dateText);
+        final String eventDate = eventDateView.getText().toString();
+        final String event = eventName + ": " + eventDate;
+        db = new DatabaseHelper(this);
+        Button addbutton = findViewById(R.id.button3);
+        addbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(db.insertDATA(event)){
+                    Toast.makeText(Calendar_EditActivity.this, "Event added", Toast.LENGTH_SHORT).show();
+                    eventNameView.setText("");
+                    eventDateView.setText("");
+                }else{
+                    Toast.makeText(Calendar_EditActivity.this, "Event not added", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         findViewById(R.id.picker).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,33 +69,6 @@ public class Calendar_EditActivity extends AppCompatActivity implements DatePick
     }
     public void clickCancle(View view){
         Intent intent = new Intent(this, NavigationActivity.class);
-        startActivity(intent);
-    }
-
-    public void clickAdd(View view){
-        TextView eventNameView = findViewById(R.id.editText);
-        String eventName = eventNameView.getText().toString();
-        TextView eventDateView = findViewById(R.id.dateText);
-        String eventDate = eventDateView.getText().toString();
-        String event = eventName + ": " + eventDate;
-        eventList.add(event);
-        SharedPreferences sharedPreferences = getSharedPreferences("YouandI", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-//////////////
-        int j=0;
-        String id = "Event" + j;
-        for(int i = 0; i < eventList.size(); i++){
-            editor.putString(id, event);
-            j++;
-        }
-//        int j=0;
-//        String id = "Event" + j;
-//        editor.putString(id, event);
-/////////////
-        editor.commit();
-
-
-        Intent intent = new Intent(this, Calendar_EventActivity.class);
         startActivity(intent);
     }
 

@@ -4,17 +4,22 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 public class Calendar_EventActivity extends AppCompatActivity {
-    ArrayAdapter<String> listAdapter;
+
+
     ListView listView;
-    ArrayList<String> arrayList = new ArrayList<>();
+    ArrayList<String> listItem ;
+    DatabaseHelper db;
+    ArrayAdapter adapter;
 
     public static final String SHARED_PREF = "sharedPref";
     public static final String text = "text";
@@ -25,32 +30,23 @@ public class Calendar_EventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar__event);
 
-        //load event
-        SharedPreferences sharedPreferences = getSharedPreferences("YouandI", Context.MODE_PRIVATE);
         listView = (ListView) findViewById(R.id.listview);
+        listItem = new ArrayList<>();
+        viewData();
 
-        ////////////
-        int j=0;
-        String id = "Event" + j;
-        String tmp = "0";
-        while (!tmp.equals("")){
-            tmp = sharedPreferences.getString(id, "");
-            arrayList.add(tmp);
-            j++;
+    }
+
+    private void viewData() {
+        Cursor cursor = db.viewData();
+        if(cursor.getCount() == 0){
+            Toast.makeText(this, "No data to show", Toast.LENGTH_SHORT).show();
+        }else {
+            while(cursor.moveToNext()){
+                listItem.add(cursor.getString(0));
+            }
+            adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listItem);
+            listView.setAdapter(adapter);
         }
-        ////////////
-//        int j=0;
-//        String id = "Event" + j;
-//        String tmp = "0";
-//        tmp = sharedPreferences.getString(id, "");
-//        arrayList.add(tmp);
-
-
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayList);
-        listView.setAdapter(arrayAdapter);
-
-
-
     }
 
 
