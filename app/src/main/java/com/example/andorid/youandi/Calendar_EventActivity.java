@@ -18,8 +18,10 @@ public class Calendar_EventActivity extends AppCompatActivity {
 
     ListView listView;
     ArrayList<String> listItem ;
-    DatabaseHelper db;
     ArrayAdapter adapter;
+    String shared = "Shared";
+
+    DatabaseHelper mydb;
 
     public static final String SHARED_PREF = "sharedPref";
     public static final String text = "text";
@@ -30,24 +32,27 @@ public class Calendar_EventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar__event);
 
-        listView = (ListView) findViewById(R.id.listview);
-        listItem = new ArrayList<>();
-        viewData();
+        ListView listView =(ListView) findViewById(R.id.listview);
+        mydb = new DatabaseHelper(this);
 
-    }
+        ArrayList<String> thelist = new ArrayList<>();
+        Cursor data = mydb.getListContents();
 
-    private void viewData() {
-        Cursor cursor = db.viewData();
-        if(cursor.getCount() == 0){
-            Toast.makeText(this, "No data to show", Toast.LENGTH_SHORT).show();
-        }else {
-            while(cursor.moveToNext()){
-                listItem.add(cursor.getString(0));
+        if(data.getCount() == 0){
+            Toast.makeText(Calendar_EventActivity.this, "There is no Event", Toast.LENGTH_LONG).show();
+        }else{
+            while (data.moveToNext()){
+                thelist.add(data.getString(1));
+                ListAdapter listAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, thelist);
+                listView.setAdapter(listAdapter);
             }
-            adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listItem);
-            listView.setAdapter(adapter);
         }
+
+
     }
+
+
+
 
 
 }

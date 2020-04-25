@@ -21,7 +21,8 @@ import java.util.Calendar;
 
 public class Calendar_EditActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
 
-    DatabaseHelper db;
+    String shared = "Shared";
+    DatabaseHelper mydb;
     private TextView dateText;
     private static ArrayList<String> eventList;
     @Override
@@ -29,22 +30,23 @@ public class Calendar_EditActivity extends AppCompatActivity implements DatePick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar__edit);
         dateText = findViewById(R.id.dateText);
-        final TextView eventNameView = findViewById(R.id.editText);
+        mydb = new DatabaseHelper(this);
+
+         final TextView eventNameView = findViewById(R.id.editText);
         final String eventName = eventNameView.getText().toString();
         final TextView eventDateView = findViewById(R.id.dateText);
         final String eventDate = eventDateView.getText().toString();
-        final String event = eventName + ": " + eventDate;
-        db = new DatabaseHelper(this);
+        final String event = eventName  + eventDate;
         Button addbutton = findViewById(R.id.button3);
         addbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(db.insertDATA(event)){
-                    Toast.makeText(Calendar_EditActivity.this, "Event added", Toast.LENGTH_SHORT).show();
-                    eventNameView.setText("");
+                if(eventDateView.length() !=0 && eventNameView.length() != 0){
+                    addData(eventName);
                     eventDateView.setText("");
+                    eventNameView.setText("");
                 }else{
-                    Toast.makeText(Calendar_EditActivity.this, "Event not added", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Calendar_EditActivity.this, "Need to Enter EventName and Event Date", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -55,6 +57,14 @@ public class Calendar_EditActivity extends AppCompatActivity implements DatePick
                 showDatePickerDialog();
             }
         });
+    }
+    public void addData(String event){
+        boolean insetData = mydb.addData(event);
+        if(insetData == true ){
+            Toast.makeText(Calendar_EditActivity.this, "Event Added", Toast.LENGTH_LONG).show();
+        }else{
+            Toast.makeText(Calendar_EditActivity.this, "Event Not Added", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void showDatePickerDialog(){

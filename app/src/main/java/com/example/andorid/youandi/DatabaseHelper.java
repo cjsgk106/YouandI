@@ -7,41 +7,40 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    private static  final String DB_Name = "Users.db";
-    private static final String DB_Table = "Users_Table";
+    public static  final String DB_Name = "mylist.db";
+    public static final String DB_Table = "mylist_data";
+    public static final String COL1 = "ID";
+    public static final String COL2 = "ITEM1";
+    public DatabaseHelper(Context context){ super(context, DB_Name, null, 1);}
 
-    private static final String ID = "ID";
-    private static final String NAME = "NAME";
-    private static final String CREATE_TABLE = "CREATE TABLE " +DB_Table +" ("+ ID+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            +NAME +" TEXT " + ")";
 
-    public DatabaseHelper(Context context){
-        super(context, DB_Name, null, 1);
-    }
     @Override
-    public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL(CREATE_TABLE);
+    public void onCreate(SQLiteDatabase db) {
+        String createTable = "CREATE TABLE "+ DB_Table + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, "+ "ITEM1 TEXT)";
+        db.execSQL(createTable);
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int l) {
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + DB_Table);
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP IF TABLE EXISTS " + DB_Table);
 
-        onCreate(sqLiteDatabase);
     }
-    public boolean insertDATA(String name){
+    public boolean addData(String item){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(NAME, name);
+        contentValues.put(COL2, item);
 
         long result = db.insert(DB_Table, null, contentValues);
-        return result != -1;
+        if(result == -1){
+            return false;
+        }else{
+            return true;
+        }
     }
 
-    public Cursor viewData(){
-        SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * from "+ DB_Table;
-        Cursor cursor = db.rawQuery(query, null);
-        return cursor;
+    public Cursor getListContents(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor data = db.rawQuery("SELECT * FROM " + DB_Table, null);
+        return data;
     }
 }
