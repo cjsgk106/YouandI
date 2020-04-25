@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -23,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -37,7 +39,7 @@ public class ProfileActivity extends AppCompatActivity implements DatePickerDial
     Button btn;
     ImageView imageView;
     TextView dateText;
-
+    String shared = "Shared";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +48,9 @@ public class ProfileActivity extends AppCompatActivity implements DatePickerDial
         imageView = findViewById(R.id.profile);
         btn = findViewById(R.id.pickPhoto);
         dateText = findViewById(R.id.dateText);
+
+        SharedPreferences sharedPreferences = getSharedPreferences(shared, MODE_PRIVATE);
+        dateText.setText(sharedPreferences.getString("DATE", ""));
 
 
         btn.setOnClickListener(new View.OnClickListener(){
@@ -65,9 +70,18 @@ public class ProfileActivity extends AppCompatActivity implements DatePickerDial
             }
         });
 
+
+
+
     }
 
     public void finishEdit(View view){
+        //keep date with sharedpreference
+        SharedPreferences sharedPreferences = getSharedPreferences(shared, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("DATE",dateText.getText().toString());
+        editor.commit();
+
         Intent intent = new Intent(this, NavigationActivity.class);
         startActivity(intent);
     }
