@@ -21,7 +21,6 @@ import java.util.Calendar;
 
 public class Calendar_EditActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
 
-    String shared = "Shared";
     DatabaseHelper mydb;
     private TextView dateText;
     private static ArrayList<String> eventList;

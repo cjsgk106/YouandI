@@ -40,6 +40,8 @@ public class ProfileActivity extends AppCompatActivity implements DatePickerDial
     ImageView imageView;
     TextView dateText;
     String shared = "Shared";
+    DatabaseHelper mydb;
+    Button finishButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,8 +51,7 @@ public class ProfileActivity extends AppCompatActivity implements DatePickerDial
         btn = findViewById(R.id.pickPhoto);
         dateText = findViewById(R.id.dateText);
 
-        SharedPreferences sharedPreferences = getSharedPreferences(shared, MODE_PRIVATE);
-        dateText.setText(sharedPreferences.getString("DATE", ""));
+
 
 
         btn.setOnClickListener(new View.OnClickListener(){
@@ -74,6 +75,7 @@ public class ProfileActivity extends AppCompatActivity implements DatePickerDial
 
 
     }
+
 
     public void finishEdit(View view){
         //keep date with sharedpreference

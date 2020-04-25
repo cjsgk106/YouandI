@@ -35,7 +35,7 @@
         android:id="@+id/textView"
         android:layout_width="232dp"
         android:layout_height="32dp"
-        android:text="500 days of love"
+        android:text="Need to Edit Profile"
         android:textSize="20dp"
         android:gravity="center"
         app:layout_constraintBottom_toTopOf="@+id/Album"

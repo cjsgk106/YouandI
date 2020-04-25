@@ -14,18 +14,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 public class Calendar_EventActivity extends AppCompatActivity {
-
-
-    ListView listView;
-    ArrayList<String> listItem ;
-    ArrayAdapter adapter;
-    String shared = "Shared";
-
     DatabaseHelper mydb;
-
-    public static final String SHARED_PREF = "sharedPref";
-    public static final String text = "text";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
