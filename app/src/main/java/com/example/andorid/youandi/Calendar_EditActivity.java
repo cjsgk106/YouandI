@@ -25,6 +25,8 @@ public class Calendar_EditActivity extends AppCompatActivity implements DatePick
     DatabaseHelper mydb;
     private TextView dateText;
     private static ArrayList<String> eventList;
+    TextView eventNameView;
+    TextView eventDateView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,19 +34,22 @@ public class Calendar_EditActivity extends AppCompatActivity implements DatePick
         dateText = findViewById(R.id.dateText);
         mydb = new DatabaseHelper(this);
 
-         final TextView eventNameView = findViewById(R.id.editText);
-        final String eventName = eventNameView.getText().toString();
-        final TextView eventDateView = findViewById(R.id.dateText);
-        final String eventDate = eventDateView.getText().toString();
-        final String event = eventName  + eventDate;
+         eventNameView = findViewById(R.id.editText);
+         eventDateView = findViewById(R.id.dateText);
+
         Button addbutton = findViewById(R.id.button3);
         addbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String eventName = eventNameView.getText().toString();
+                String eventDate = eventDateView.getText().toString();
+                String event = eventName+" - "+ eventDate;
                 if(eventDateView.length() !=0 && eventNameView.length() != 0){
-                    addData(eventName);
+                    addData(event);
                     eventDateView.setText("");
                     eventNameView.setText("");
+                    Toast.makeText(Calendar_EditActivity.this, "Event "+ eventName+" is added", Toast.LENGTH_LONG).show();
+
                 }else{
                     Toast.makeText(Calendar_EditActivity.this, "Need to Enter EventName and Event Date", Toast.LENGTH_LONG).show();
                 }
