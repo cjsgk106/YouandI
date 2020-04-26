@@ -82,6 +82,7 @@ public class SignupActivity extends AppCompatActivity {
         UserModel userModel = new UserModel(username, user.getEmail(), uid);
         firebaseDatabase.child("users").child(user.getUid()).setValue(userModel);
 
+
         // Go to NavigationActivity
         startActivity(new Intent(SignupActivity.this, NavigationActivity.class));
         SignupActivity.this.finish();
