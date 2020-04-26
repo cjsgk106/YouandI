@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-import com.bumptech.glide.Glide;
 import com.example.andorid.youandi.model.UserModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -18,15 +17,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -52,10 +47,12 @@ public class ChatFragment extends Fragment {
     class ChatFragmentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         List<UserModel> userModels;
+        String pemail = "";
 
         public ChatFragmentRecyclerViewAdapter() {
             userModels = new ArrayList<>();
             final String myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
             FirebaseDatabase.getInstance().getReference().child("users").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -64,6 +61,14 @@ public class ChatFragment extends Fragment {
 
                         UserModel userModel = snapshot.getValue(UserModel.class);
                         if (userModel.uid.equals(myUid)) {
+                            pemail = userModel.partnerEmail;
+                            break;
+                        }
+
+                    }
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        UserModel userModel = snapshot.getValue(UserModel.class);
+                        if (!userModel.userId.equals(pemail)) {
                             continue;
                         }
                         userModels.add(userModel);
