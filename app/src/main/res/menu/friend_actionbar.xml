@@ -4,6 +4,6 @@
     <item
         android:title="AddFriend"
         android:id="@+id/action_addFriend"
-        android:icon="@drawable/ic_person_add_black_24dp"
+        android:icon="@drawable/ic_chat_black_24dp"
         app:showAsAction = "always"/>
 </menu>
