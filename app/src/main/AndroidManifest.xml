@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ChatroomActivity"></activity>
+        <activity android:name=".Location_ViewActivity"></activity>
+        <activity android:name=".ChatroomActivity" />
         <activity android:name=".MessageActivity" />
         <activity android:name=".Calendar_EventActivity" />
         <activity android:name=".Calendar_EditActivity" />
@@ -29,6 +30,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyATDND8Hcapt5xtKJ6IAdEgKDNlXw7me3E"/>
     </application>
 
 </manifest>
