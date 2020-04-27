@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.andorid.youandi.model.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,6 +29,7 @@ public class SignupActivity extends AppCompatActivity {
     private EditText email;
     private EditText password;
     private EditText name;
+    private EditText partneremail;
     private Button signup;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference firebaseDatabase;
@@ -40,6 +42,7 @@ public class SignupActivity extends AppCompatActivity {
         email = (EditText) findViewById(R.id.signupActivity_edittext_email);
         password = (EditText) findViewById(R.id.signupActivity_edittext_password);
         name = (EditText) findViewById(R.id.signupActivity_edittext_name);
+        partneremail = (EditText) findViewById(R.id.signupActivity_edittext_partneremail);
         signup = (Button) findViewById(R.id.signupActivity_button_signup);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance().getReference();
@@ -76,13 +79,16 @@ public class SignupActivity extends AppCompatActivity {
 
     private void onAuthSuccess(FirebaseUser user) {
         String username = name.getText().toString();
+        String uid = firebaseAuth.getCurrentUser().getUid();
+        String partnerEmail = partneremail.getText().toString();
         // Write new user
-        UserModel userModel = new UserModel(username, user.getEmail());
+        UserModel userModel = new UserModel(username, user.getEmail(), uid, partnerEmail);
         firebaseDatabase.child("users").child(user.getUid()).setValue(userModel);
+
 
         // Go to NavigationActivity
         startActivity(new Intent(SignupActivity.this, NavigationActivity.class));
-        finish();
+        SignupActivity.this.finish();
     }
 
     private boolean validateForm() {
@@ -107,6 +113,8 @@ public class SignupActivity extends AppCompatActivity {
         } else {
             name.setError(null);
         }
+
+
 
         return result;
     }
