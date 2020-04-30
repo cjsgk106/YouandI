@@ -1,13 +1,14 @@
-package com.example.andorid.youandi;
+package com.example.andorid.youandi.album;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.GridView;
+
+import com.example.andorid.youandi.R;
+import com.example.andorid.youandi.album.Album_PhotoActivity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

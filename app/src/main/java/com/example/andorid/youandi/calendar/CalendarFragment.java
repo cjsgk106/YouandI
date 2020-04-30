@@ -1,4 +1,4 @@
-package com.example.andorid.youandi;
+package com.example.andorid.youandi.calendar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,15 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CalendarView;
-import android.widget.TextView;
+
+import com.example.andorid.youandi.R;
+import com.example.andorid.youandi.calendar.Calendar_EditActivity;
+import com.example.andorid.youandi.calendar.Calendar_EventActivity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 
 public class CalendarFragment extends Fragment {
     @Nullable

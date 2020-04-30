@@ -1,21 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:fitsSystemWindows="true"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".chat.ChatFragment">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/fragment_chat_toolbar"
+    <com.google.android.material.tabs.TabLayout
+        android:background="@color/colorPrimary"
+        app:tabSelectedTextColor="@android:color/white"
+        app:tabTextColor="@android:color/black"
+        android:id="@+id/fragment_chat_tablayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorControlActivated"
-        app:titleTextColor="@android:color/white"
-        ></androidx.appcompat.widget.Toolbar>
+        android:layout_height="wrap_content">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/fragment_chat_recyclerview"
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/fragment_chat_tabitem_friendlist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Friend" />
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/fragment_chat_tabitem_chatlist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chatroom" />
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/fragment_chat_viewpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></androidx.recyclerview.widget.RecyclerView>
+        android:layout_height="wrap_content" />
+
 </LinearLayout>

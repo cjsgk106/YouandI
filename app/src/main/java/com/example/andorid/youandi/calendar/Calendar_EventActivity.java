@@ -1,16 +1,16 @@
-package com.example.andorid.youandi;
+package com.example.andorid.youandi.calendar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.Menu;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.example.andorid.youandi.DatabaseHelper;
+import com.example.andorid.youandi.R;
 
 import java.util.ArrayList;
 public class Calendar_EventActivity extends AppCompatActivity {

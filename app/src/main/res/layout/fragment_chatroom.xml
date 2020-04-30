@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ChatroomActivity">
+    tools:context=".chat.ChatroomFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/chatroomActivity_recyclerview"
+        android:id="@+id/fragment_chatroom_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

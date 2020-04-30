@@ -1,4 +1,4 @@
-package com.example.andorid.youandi;
+package com.example.andorid.youandi.chat;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.andorid.youandi.R;
 import com.example.andorid.youandi.model.ChatModel;
 import com.example.andorid.youandi.model.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;

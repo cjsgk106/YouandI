@@ -1,4 +1,4 @@
-package com.example.andorid.youandi;
+package com.example.andorid.youandi.chat;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
@@ -11,9 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import androidx.appcompat.widget.Toolbar;
 
 
+import com.example.andorid.youandi.R;
 import com.example.andorid.youandi.model.ChatModel;
 import com.example.andorid.youandi.model.UserModel;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,32 +23,28 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ChatFragment extends Fragment {
+public class FriendListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 
-        View view = inflater.inflate(R.layout.fragment_chat, container, false);
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fragment_chat_recyclerview);
+        View view = inflater.inflate(R.layout.fragment_friendlist, container, false);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fragment_friendlist_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
         recyclerView.setAdapter(new ChatFragmentRecyclerViewAdapter());
 
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.fragment_chat_toolbar);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        setHasOptionsMenu(true);
+        //Toolbar toolbar = (Toolbar) view.findViewById(R.id.fragment_chat_toolbar);
+        //((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        //setHasOptionsMenu(true);
         //ActionBar ab = ((AppCompatActivity)getActivity()).getSupportActionBar();
         //ab.setTitle("hi");
 
@@ -65,7 +61,7 @@ public class ChatFragment extends Fragment {
         int id = item.getItemId();
         switch (id) {
             case R.id.action_addFriend:
-                startActivity(new Intent(getActivity(), ChatroomActivity.class));
+                startActivity(new Intent(getActivity(), ChatroomFragment.class));
                 return true;
 
         }

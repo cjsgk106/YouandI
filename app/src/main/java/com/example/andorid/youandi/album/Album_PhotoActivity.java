@@ -1,4 +1,4 @@
-package com.example.andorid.youandi;
+package com.example.andorid.youandi.album;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.andorid.youandi.NavigationActivity;
+import com.example.andorid.youandi.R;
 import com.example.andorid.youandi.model.ImageAdapter;
 
 import java.io.IOException;

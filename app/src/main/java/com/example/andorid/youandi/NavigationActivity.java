@@ -8,6 +8,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.example.andorid.youandi.album.AlbumFragment;
+import com.example.andorid.youandi.calendar.CalendarFragment;
+import com.example.andorid.youandi.chat.ChatFragment;
+import com.example.andorid.youandi.location.LocationFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class NavigationActivity extends AppCompatActivity {

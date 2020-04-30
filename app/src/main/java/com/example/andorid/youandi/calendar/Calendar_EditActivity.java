@@ -1,20 +1,19 @@
-package com.example.andorid.youandi;
+package com.example.andorid.youandi.calendar;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.andorid.youandi.DatabaseHelper;
+import com.example.andorid.youandi.NavigationActivity;
+import com.example.andorid.youandi.R;
 
 import java.util.ArrayList;
 import java.util.Calendar;
