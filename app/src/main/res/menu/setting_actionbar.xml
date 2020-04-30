@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item
-        android:title="AddFriend"
-        android:id="@+id/action_addFriend"
-        android:icon="@drawable/ic_chat_black_24dp"
-        app:showAsAction = "always"/>
+        android:title="Logout"
+        android:id="@+id/action_logout"
+        />
+
+    <item
+        android:id="@+id/action_setting"
+        android:title="Setting"
+        />
 </menu>

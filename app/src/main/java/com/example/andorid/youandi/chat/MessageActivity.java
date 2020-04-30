@@ -182,13 +182,13 @@ public class MessageActivity extends AppCompatActivity {
             } else {
 
                 messageViewHolder.name_textView.setText(userModel.userName);
-                messageViewHolder.message_textView.setBackgroundResource(R.drawable.your_message);
                 messageViewHolder.message_textView.setText(messageModels.get(position).message);
+                messageViewHolder.message_textView.setTextColor(Color.parseColor("#080808"));
+                messageViewHolder.message_textView.setBackgroundResource(R.drawable.your_message);
                 messageViewHolder.linearLayout.setVisibility(View.VISIBLE);
                 messageViewHolder.message_textView.setTextSize(25);
                 messageViewHolder.linearLayoutMain.setGravity(Gravity.LEFT);
             }
-            ((MessageViewHolder)holder).message_textView.setText(messageModels.get(position).message);
 
             long unixTime = (long) messageModels.get(position).timestamp;
             Date date = new Date(unixTime);

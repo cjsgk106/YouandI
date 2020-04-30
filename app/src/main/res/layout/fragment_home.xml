@@ -7,9 +7,11 @@
     tools:context=".HomeFragment">
 
 
+
     <ImageButton
         android:id="@+id/imageButton6"
-        android:layout_width="330dp"
+
+        android:layout_width="306dp"
         android:layout_height="330dp"
         android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,13 +24,11 @@
         android:id="@+id/imageView"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:scaleType="fitXY"
         app:layout_constraintBottom_toTopOf="@+id/Album"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageButton6"
-        app:layout_constraintVertical_bias="0.234"
-        app:srcCompat="@drawable/heart" />
+        app:layout_constraintVertical_bias="0.234"/>
     app:srcCompat="@drawable/download"/>
 
     <TextView

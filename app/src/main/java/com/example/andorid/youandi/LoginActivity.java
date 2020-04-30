@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         FirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         firebaseAuth = firebaseAuth.getInstance();
-      //  firebaseAuth.signOut();
+        //firebaseAuth.signOut();
 
         String loading_background = FirebaseRemoteConfig.getString("loading_background");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
