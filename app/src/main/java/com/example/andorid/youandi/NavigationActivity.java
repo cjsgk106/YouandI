@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -15,6 +17,9 @@ import com.example.andorid.youandi.location.LocationFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class NavigationActivity extends AppCompatActivity {
+//    byte[] byteArray = getIntent().getByteArrayExtra("byteArray");
+//    Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

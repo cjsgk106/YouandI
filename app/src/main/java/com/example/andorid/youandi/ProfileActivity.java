@@ -12,6 +12,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -25,7 +26,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.util.Base64;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -34,12 +37,16 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Calendar;
 
+import static java.util.Base64.*;
+
 public class ProfileActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     private static final int GALLERY_REQUEST_CODE = 123;
     Button btn;
     ImageView imageView;
     TextView dateText;
     String shared = "Shared";
+    Uri imageUri;
+    byte[] bytesImage;
     DatabaseHelper mydb;
     Button finishButton;
     @Override
@@ -78,10 +85,19 @@ public class ProfileActivity extends AppCompatActivity implements DatePickerDial
 
 
     public void finishEdit(View view){
+        // convert bitmap to byte array
+        Bitmap bitmap = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
+        ByteArrayOutputStream ba = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, ba);
+        bytesImage = ba.toByteArray();
+
+        String encode = Base64.encodeToString(bytesImage, Base64.DEFAULT);
+
         //keep date with sharedpreference
         SharedPreferences sharedPreferences = getSharedPreferences(shared, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("DATE",dateText.getText().toString());
+        editor.putString("image", encode);
         editor.commit();
 
         Intent intent = new Intent(this, NavigationActivity.class);
@@ -101,7 +117,7 @@ public class ProfileActivity extends AppCompatActivity implements DatePickerDial
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK && data != null){
-                Uri imageUri = data.getData();
+                imageUri = data.getData();
             Bitmap bitmap = null;
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
