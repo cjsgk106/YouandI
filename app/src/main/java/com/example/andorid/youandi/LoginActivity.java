@@ -3,7 +3,9 @@ package com.example.andorid.youandi;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         FirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         firebaseAuth = firebaseAuth.getInstance();
-        firebaseAuth.signOut();
+      //  firebaseAuth.signOut();
 
         String loading_background = FirebaseRemoteConfig.getString("loading_background");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -48,6 +50,8 @@ public class LoginActivity extends AppCompatActivity {
         signup = (Button) findViewById(R.id.loginActivity_button_signup);
         login.setBackgroundColor(Color.parseColor(loading_background));
         signup.setBackgroundColor(Color.parseColor(loading_background));
+
+
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,6 +91,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (!task.isSuccessful()) {
                             // if login fails
                             Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+
                         }
                     }
                 });

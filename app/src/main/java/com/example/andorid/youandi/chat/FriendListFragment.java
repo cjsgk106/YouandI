@@ -42,31 +42,7 @@ public class FriendListFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
         recyclerView.setAdapter(new ChatFragmentRecyclerViewAdapter());
 
-        //Toolbar toolbar = (Toolbar) view.findViewById(R.id.fragment_chat_toolbar);
-        //((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        //setHasOptionsMenu(true);
-        //ActionBar ab = ((AppCompatActivity)getActivity()).getSupportActionBar();
-        //ab.setTitle("hi");
-
         return view;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.friend_actionbar, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.action_addFriend:
-                startActivity(new Intent(getActivity(), ChatroomFragment.class));
-                return true;
-
-        }
-
-        return false;
     }
 
     class ChatFragmentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

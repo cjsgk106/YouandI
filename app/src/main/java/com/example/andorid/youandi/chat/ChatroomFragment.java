@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -101,6 +103,17 @@ public class ChatroomFragment extends Fragment {
             messageMap.putAll(chatModels.get(position).messages);
             String lastMessageKey = (String) messageMap.keySet().toArray()[0];
             customViewHolder.textView_lastmessage.setText(chatModels.get(position).messages.get(lastMessageKey).message);
+
+            final String desUid = destinationUid;
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(view.getContext(), MessageActivity.class);
+                    intent.putExtra("destinationUid", desUid);
+                    ActivityOptions activityOptions = ActivityOptions.makeCustomAnimation(view.getContext(), R.anim.fromright, R.anim.toleft);
+                    startActivity(intent, activityOptions.toBundle());
+                }
+            });
         }
 
         @Override

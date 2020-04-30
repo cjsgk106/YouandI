@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -26,10 +27,16 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class MessageActivity extends AppCompatActivity {
 
@@ -39,6 +46,8 @@ public class MessageActivity extends AppCompatActivity {
     private String uid;
     private String chatRoomUid;
     private RecyclerView recyclerView;
+
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +80,7 @@ public class MessageActivity extends AppCompatActivity {
                     ChatModel.MessageModel messageModel = new ChatModel.MessageModel();
                     messageModel.uid = uid;
                     messageModel.message = editText.getText().toString();
+                    messageModel.timestamp = ServerValue.TIMESTAMP;
 
                     FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("messages").push().setValue(messageModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -164,20 +174,27 @@ public class MessageActivity extends AppCompatActivity {
 
             if (messageModels.get(position).uid.equals(uid)) {
                 messageViewHolder.message_textView.setText(messageModels.get(position).message);
-                messageViewHolder.message_textView.setBackgroundResource(R.drawable.right_bubble);
+                messageViewHolder.message_textView.setTextColor(Color.parseColor("#FFFFFF"));
+                messageViewHolder.message_textView.setBackgroundResource(R.drawable.my_message);
                 messageViewHolder.linearLayout.setVisibility(View.INVISIBLE);
                 messageViewHolder.message_textView.setTextSize(25);
                 messageViewHolder.linearLayoutMain.setGravity(Gravity.RIGHT);
             } else {
 
                 messageViewHolder.name_textView.setText(userModel.userName);
-                messageViewHolder.message_textView.setBackgroundResource(R.drawable.left_bubble);
+                messageViewHolder.message_textView.setBackgroundResource(R.drawable.your_message);
                 messageViewHolder.message_textView.setText(messageModels.get(position).message);
                 messageViewHolder.linearLayout.setVisibility(View.VISIBLE);
                 messageViewHolder.message_textView.setTextSize(25);
                 messageViewHolder.linearLayoutMain.setGravity(Gravity.LEFT);
             }
             ((MessageViewHolder)holder).message_textView.setText(messageModels.get(position).message);
+
+            long unixTime = (long) messageModels.get(position).timestamp;
+            Date date = new Date(unixTime);
+            simpleDateFormat.setTimeZone(TimeZone.getDefault());
+            String time = simpleDateFormat.format(date);
+            messageViewHolder.timestamp_textView.setText(time);
         }
 
         @Override
@@ -191,6 +208,7 @@ public class MessageActivity extends AppCompatActivity {
             public ImageView profile_imageView;
             public LinearLayout linearLayout;
             public LinearLayout linearLayoutMain;
+            public TextView timestamp_textView;
 
             public MessageViewHolder(View view) {
                 super(view);
@@ -199,6 +217,7 @@ public class MessageActivity extends AppCompatActivity {
                 profile_imageView = (ImageView) view.findViewById(R.id.item_message_imageview_profile);
                 linearLayout = (LinearLayout) view.findViewById(R.id.item_message_linearlayout);
                 linearLayoutMain = (LinearLayout) view.findViewById(R.id.item_message_linearlayout_main);
+                timestamp_textView = (TextView) view.findViewById(R.id.item_message_textview_timestamp);
 
             }
         }

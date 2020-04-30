@@ -10,5 +10,6 @@ public class ChatModel {
     public static class MessageModel {
         public String uid;
         public String message;
+        public Object timestamp;
     }
 }
