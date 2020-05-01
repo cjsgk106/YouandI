@@ -30,8 +30,8 @@ public class LocationFragment extends Fragment {
         viewbutton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent(getActivity(), Location_ViewActivity.class);
-               // startActivity(intent);
+                Intent intent = new Intent(getActivity(), LocationViewActivity.class);
+                startActivity(intent);
             }
         });
 

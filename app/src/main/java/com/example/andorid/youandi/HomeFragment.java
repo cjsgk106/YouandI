@@ -54,20 +54,20 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(shared, Context.MODE_PRIVATE);
-       textView = (TextView) view.findViewById(R.id.textView);
-        textView.setText(sharedPreferences.getString("DATE", "Choose Date"));
-
-        String encoded = sharedPreferences.getString("image", "");
-        byte[] images = Base64.decode(encoded.getBytes(), Base64.DEFAULT);
-        Bitmap bitmap = BitmapFactory.decodeByteArray(images, 0, images.length);
-        bitmap = getResizedBitmap(bitmap, 900, 900);
-        button.setImageBitmap(bitmap);
-
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.fragment_home_toolbar);
-        toolbar.setBackgroundColor(Color.parseColor("#f7dce2"));
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        setHasOptionsMenu(true);
+//        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(shared, Context.MODE_PRIVATE);
+//       textView = (TextView) view.findViewById(R.id.textView);
+//        textView.setText(sharedPreferences.getString("DATE", "Choose Date"));
+//
+//        String encoded = sharedPreferences.getString("image", "");
+//        byte[] images = Base64.decode(encoded.getBytes(), Base64.DEFAULT);
+//        Bitmap bitmap = BitmapFactory.decodeByteArray(images, 0, images.length);
+//        bitmap = getResizedBitmap(bitmap, 900, 900);
+//        button.setImageBitmap(bitmap);
+//
+//        Toolbar toolbar = (Toolbar) view.findViewById(R.id.fragment_home_toolbar);
+//        toolbar.setBackgroundColor(Color.parseColor("#f7dce2"));
+//        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+//        setHasOptionsMenu(true);
 
 
         return view;
