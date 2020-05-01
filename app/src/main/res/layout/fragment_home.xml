@@ -29,7 +29,8 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
-        />
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/heart" />
     app:srcCompat="@drawable/download"/>
 
     <TextView
