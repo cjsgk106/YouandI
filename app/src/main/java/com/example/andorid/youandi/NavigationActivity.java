@@ -52,26 +52,6 @@ public class NavigationActivity extends AppCompatActivity {
                     break;
             }
 
-            /*if(item.getItemId() == R.id.nav_home){
-                selectedFragment = new HomeFragment();
-            }
-            else if (item.getItemId() == R.id.nav_chat){
-                selectedFragment = new ChatFragment();
-            }
-            else if (item.getItemId() == R.id.nav_album){
-                selectedFragment = new AlbumFragment();
-            }
-            else if (item.getItemId() == R.id.nav_calendar){
-                selectedFragment = new CalendarFragment();
-            }
-            else if (item.getItemId() == R.id.nav_location){
-                selectedFragment = new LocationFragment();
-            }
-            else {
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new HomeFragment()).commit();
-                return true;
-            }*/
 
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     selectedFragment).commit();

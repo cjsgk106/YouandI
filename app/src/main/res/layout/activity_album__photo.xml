@@ -18,6 +18,7 @@
             android:id="@+id/pickPhoto"/>
 
         <EditText
+            android:id="@+id/text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Edit note"/>

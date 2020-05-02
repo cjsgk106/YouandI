@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -15,18 +16,28 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.andorid.youandi.NavigationActivity;
 import com.example.andorid.youandi.R;
 import com.example.andorid.youandi.model.ImageAdapter;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class Album_PhotoActivity extends AppCompatActivity {
     private static final int GALLERY_REQUEST_CODE = 123;
     Button btn;
     ImageView imageView;
+    TextView textView;
+    byte[] bytesImage;
+
 //    LinearLayout layout;
 
 //    GridView gridView;
@@ -38,6 +49,7 @@ public class Album_PhotoActivity extends AppCompatActivity {
 
         imageView = findViewById(R.id.newpic);
         btn = findViewById(R.id.pickPhoto);
+        textView = findViewById(R.id.text);
 
         btn.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -84,6 +96,14 @@ public class Album_PhotoActivity extends AppCompatActivity {
     }
 
     public void finishEdit(View view){
+        StorageReference storageRef =  FirebaseStorage.getInstance().getReference();
+        StorageReference photoRef = storageRef.child("photo/1");
+        Bitmap bitmap = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
+        ByteArrayOutputStream ba = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, ba);
+        bytesImage = ba.toByteArray();
+        UploadTask uploadTask = photoRef.putBytes(bytesImage);
+
         Intent intent = new Intent(this, NavigationActivity.class);
         startActivity(intent);
     }
