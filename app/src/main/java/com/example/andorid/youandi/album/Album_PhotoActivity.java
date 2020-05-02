@@ -1,8 +1,10 @@
 package com.example.andorid.youandi.album;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -11,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
@@ -22,6 +25,8 @@ import android.widget.Toast;
 import com.example.andorid.youandi.NavigationActivity;
 import com.example.andorid.youandi.R;
 import com.example.andorid.youandi.model.ImageAdapter;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -36,6 +41,7 @@ public class Album_PhotoActivity extends AppCompatActivity {
     Button btn;
     ImageView imageView;
     TextView textView;
+    Uri imageUri;
     byte[] bytesImage;
 
 //    LinearLayout layout;
@@ -67,7 +73,7 @@ public class Album_PhotoActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK && data != null){
-            Uri imageUri = data.getData();
+            imageUri = data.getData();
             Bitmap bitmap = null;
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
@@ -96,15 +102,40 @@ public class Album_PhotoActivity extends AppCompatActivity {
     }
 
     public void finishEdit(View view){
-        StorageReference storageRef =  FirebaseStorage.getInstance().getReference();
-        StorageReference photoRef = storageRef.child("photo/1");
+        StorageReference storageRef =  FirebaseStorage.getInstance().getReference("album");
+        StorageReference photoRef = storageRef.child(System.currentTimeMillis()+"."+getFileExtension(imageUri));
+        // new from here
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("album");
+
         Bitmap bitmap = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
         ByteArrayOutputStream ba = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, ba);
         bytesImage = ba.toByteArray();
+
         UploadTask uploadTask = photoRef.putBytes(bytesImage);
+//        UploadTask uploadTask = photoRef.putFile(imageUri);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(Album_PhotoActivity.this, "Upload failed", Toast.LENGTH_LONG).show();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(Album_PhotoActivity.this, "Upload success", Toast.LENGTH_LONG).show();
+                Upload upload = new Upload(textView.getText().toString().trim(), taskSnapshot.getStorage().getDownloadUrl().toString());
+                String uploadId = dbRef.push().getKey();
+                dbRef.child(uploadId).setValue(upload);
+            }
+        });
 
         Intent intent = new Intent(this, NavigationActivity.class);
         startActivity(intent);
+    }
+
+    private String getFileExtension(Uri uri){
+        ContentResolver cR = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(cR.getType(uri));
     }
 }
