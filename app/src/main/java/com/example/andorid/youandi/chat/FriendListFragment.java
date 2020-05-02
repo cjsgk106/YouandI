@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.andorid.youandi.R;
 import com.example.andorid.youandi.model.ChatModel;
 import com.example.andorid.youandi.model.UserModel;
@@ -94,9 +96,15 @@ public class FriendListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
-
-            //Glide.with(holder.itemView.getContext()).load(userModels.get(position))
+            if (!userModels.get(position).image.equals("")) {
+                Glide.with
+                        (holder.itemView.getContext())
+                        .load(userModels.get(position).image)
+                        .apply(new RequestOptions().circleCrop())
+                        .into(((CustomViewHolder) holder).imageView);
+            }
             ((CustomViewHolder)holder).textViewName.setText(userModels.get(position).userName);
+
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

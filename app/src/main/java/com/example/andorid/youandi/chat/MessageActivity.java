@@ -17,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.andorid.youandi.R;
 import com.example.andorid.youandi.model.ChatModel;
 import com.example.andorid.youandi.model.UserModel;
@@ -180,7 +182,13 @@ public class MessageActivity extends AppCompatActivity {
                 messageViewHolder.message_textView.setTextSize(25);
                 messageViewHolder.linearLayoutMain.setGravity(Gravity.RIGHT);
             } else {
-
+                if (!userModel.image.equals("")) {
+                    Glide.with
+                            (holder.itemView.getContext())
+                            .load(userModel.image)
+                            .apply(new RequestOptions().circleCrop())
+                            .into(messageViewHolder.profile_imageView);
+                }
                 messageViewHolder.name_textView.setText(userModel.userName);
                 messageViewHolder.message_textView.setText(messageModels.get(position).message);
                 messageViewHolder.message_textView.setTextColor(Color.parseColor("#080808"));

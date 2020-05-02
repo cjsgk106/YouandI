@@ -6,6 +6,7 @@ public class UserModel {
     public String userId;
     public String uid;
     public String partnerEmail;
+    public String image;
 
     public UserModel() {
 
@@ -16,6 +17,15 @@ public class UserModel {
         this.userId = userId;
         this.uid = uid;
         this.partnerEmail = partnerEmail;
+        this.image = "";
+    }
+
+    public UserModel(String userName, String userId, String uid, String partnerEmail, String image) {
+        this.userName = userName;
+        this.userId = userId;
+        this.uid = uid;
+        this.partnerEmail = partnerEmail;
+        this.image = image;
     }
 
     public String getUserName() {

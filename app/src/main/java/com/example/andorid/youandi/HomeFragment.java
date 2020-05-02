@@ -1,6 +1,7 @@
 package com.example.andorid.youandi;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 
@@ -9,8 +10,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,9 +26,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.example.andorid.youandi.model.UserModel;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.IOException;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,7 +55,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
-
+import static android.app.Activity.RESULT_OK;
 
 
 public class HomeFragment extends Fragment {
@@ -40,20 +64,19 @@ public class HomeFragment extends Fragment {
     String shared = "Shared";
 
     private FirebaseAuth firebaseAuth;
+    private StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+    private Uri imageUri;
+    private static final int PICK_FROM_ALBUM = 10;
+    private ImageButton imageButton;
+    private DatabaseReference firebaseDatabase;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_home, container, false);
-        ImageButton button = (ImageButton) view.findViewById(R.id.imageButton6);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                Intent intent = new Intent(getActivity(), ProfileActivity.class);
-                startActivity(intent);
-            }
-        });
+        firebaseDatabase = FirebaseDatabase.getInstance().getReference();
+        firebaseAuth = FirebaseAuth.getInstance();
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(shared, Context.MODE_PRIVATE);
         textView = (TextView) view.findViewById(R.id.textView);
@@ -62,37 +85,124 @@ public class HomeFragment extends Fragment {
             textView.setText(sharedPreferences.getString("DATE", ""));
         };
 
-        String encoded = sharedPreferences.getString("image", "");
-        byte[] images = Base64.decode(encoded.getBytes(), Base64.DEFAULT);
-        Bitmap bitmap = BitmapFactory.decodeByteArray(images, 0, images.length);
-        bitmap = getResizedBitmap(bitmap, 900, 900);
-        button.setImageBitmap(bitmap);
-
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.fragment_home_toolbar);
         toolbar.setBackgroundColor(Color.parseColor("#f7dce2"));
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         setHasOptionsMenu(true);
 
+        imageButton = (ImageButton) view.findViewById(R.id.fragment_home_imagebutton);
+        String myuid = firebaseAuth.getCurrentUser().getUid();
+
+        firebaseDatabase.child("users").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot item : dataSnapshot.getChildren()) {
+                    UserModel userModel = item.getValue(UserModel.class);
+                    if (userModel.uid.equals(myuid)) {
+                        if (!userModel.image.equals("")) {
+                            Glide.with
+                                    (view)
+                                    .load(userModel.image)
+                                    .apply(new RequestOptions().circleCrop())
+                                    .into(imageButton);
+                        }
+                        break;
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+                startActivityForResult(intent, PICK_FROM_ALBUM);
+            }
+        });
+
 
         return view;
     }
 
-    public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
-        int width = bm.getWidth();
-        int height = bm.getHeight();
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
-        // CREATE A MATRIX FOR THE MANIPULATION
-        Matrix matrix = new Matrix();
-        // RESIZE THE BIT MAP
-        matrix.postScale(scaleWidth, scaleHeight);
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-        // "RECREATE" THE NEW BITMAP
-        Bitmap resizedBitmap = Bitmap.createBitmap(
-                bm, 0, 0, width, height, matrix, false);
-        bm.recycle();
+        if (requestCode == PICK_FROM_ALBUM
+                && resultCode == RESULT_OK
+                && data != null
+                && data.getData() != null) {
 
-        return resizedBitmap;
+            // Get the Uri of data
+            imageUri = data.getData();
+            try {
+
+                // Setting image on image view using Bitmap
+                Bitmap bitmap = MediaStore
+                        .Images
+                        .Media
+                        .getBitmap(getActivity().getApplicationContext().getContentResolver(),
+                                imageUri
+                        );
+                imageButton.setImageBitmap(bitmap);
+                uploadImage();
+            }
+
+            catch (IOException e) {
+                // Log the exception
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void uploadImage() {
+        if (imageUri != null) {
+
+            StorageReference ref
+                    = storageReference
+                    .child("profileImages").child(firebaseAuth.getCurrentUser().getUid());
+
+            // adding listeners on upload
+            // or failure of image
+            Task<Uri> urltask = ref.putFile(imageUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+                    return ref.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful()) {
+                        Uri downloadUri = task.getResult();
+                        Toast.makeText(getActivity(),
+                                "Image Uploaded!!",
+                                Toast.LENGTH_SHORT).show();
+                        if (downloadUri != null) {
+
+                            String profileImageUrl  = downloadUri.toString();
+                            firebaseDatabase.child("users").child(firebaseAuth.getCurrentUser().getUid()).child("image").setValue(profileImageUrl);
+                        }
+
+                    } else {
+                        Toast.makeText(getActivity(),
+                                "Failed " + task.getException(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
+        }
     }
 
     @Override
@@ -113,6 +223,17 @@ public class HomeFragment extends Fragment {
                 return true;
         }
         return false;
+    }
+
+    private boolean hasImage(@NonNull ImageButton view) {
+        Drawable drawable = view.getDrawable();
+        boolean hasImage = (drawable != null);
+
+        if (hasImage && (drawable instanceof BitmapDrawable)) {
+            hasImage = ((BitmapDrawable)drawable).getBitmap() != null;
+        }
+
+        return hasImage;
     }
 
 }

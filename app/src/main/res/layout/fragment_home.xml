@@ -16,12 +16,13 @@
         ></androidx.appcompat.widget.Toolbar>
 
     <ImageButton
-        android:id="@+id/imageButton6"
+        android:id="@+id/fragment_home_imagebutton"
 
         android:layout_width="900px"
         android:layout_height="900px"
         android:layout_gravity="center"
         android:layout_marginTop="24dp"
+        android:adjustViewBounds="true"
         tools:srcCompat="@tools:sample/avatars" />
 
     <ImageView
