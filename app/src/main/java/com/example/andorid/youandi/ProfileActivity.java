@@ -51,19 +51,19 @@ import java.util.Calendar;
 import static java.util.Base64.*;
 
 public class ProfileActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
-    private static final int GALLERY_REQUEST_CODE = 123;
+//    private static final int GALLERY_REQUEST_CODE = 123;
     private static final int PICK_FROM_ALBUM = 10;
     Button btn;
     ImageView imageView;
     TextView dateText;
-    String shared = "Shared";
+//    String shared = "Shared";
     Uri imageUri;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference firebaseDatabase;
     private StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-    byte[] bytesImage;
-    DatabaseHelper mydb;
-    Button finishButton;
+//    byte[] bytesImage;
+//    DatabaseHelper mydb;
+//    Button finishButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

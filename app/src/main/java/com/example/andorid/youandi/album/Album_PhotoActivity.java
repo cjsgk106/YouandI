@@ -45,10 +45,6 @@ public class Album_PhotoActivity extends AppCompatActivity {
     byte[] bytesImage;
     Button cancel;
 
-//    LinearLayout layout;
-
-//    GridView gridView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
