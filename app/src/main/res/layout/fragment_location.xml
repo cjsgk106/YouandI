@@ -2,15 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="wrap_content"
     android:orientation="vertical">
-    <Button
-        android:id="@+id/add_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Add Location" />
-
-    <Button
+       <Button
         android:id="@+id/view_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="View Location" />
+        android:text="Partner's Location" />
 </LinearLayout>
