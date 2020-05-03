@@ -2,44 +2,27 @@ package com.example.andorid.youandi;
 
 
 import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Matrix;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-
-import android.provider.ContactsContract;
 import android.provider.MediaStore;
-import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.andorid.youandi.model.UserModel;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -50,26 +33,17 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
-import org.w3c.dom.Text;
-
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-
 import static android.app.Activity.RESULT_OK;
 
 
 public class HomeFragment extends Fragment {
-    private String shared = "Shared";
     private TextView textView;
     private FirebaseAuth firebaseAuth;
     private StorageReference storageReference = FirebaseStorage.getInstance().getReference();
@@ -109,9 +83,8 @@ public class HomeFragment extends Fragment {
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                         cldr.set(year, month, day);
                         startDate = cldr.getTimeInMillis();
-                        firebaseDatabase.child("dates").child(firebaseAuth.getCurrentUser().getUid()).setValue(startDate);
-
-
+//                        firebaseDatabase.child("dates").setValue(startDate);
+                        firebaseDatabase.child("users").child(firebaseAuth.getCurrentUser().getUid()).child("dates").setValue(startDate);
                     }
                 }, year, month, day);
                 picker.getDatePicker().setMaxDate(System.currentTimeMillis());
@@ -119,25 +92,41 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        firebaseDatabase.child("dates").addValueEventListener(new ValueEventListener() {
+        firebaseDatabase.child("users").child(firebaseAuth.getCurrentUser().getUid()).child("dates").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    for (DataSnapshot item : dataSnapshot.getChildren()) {
-                        if (item.getKey().equals(firebaseAuth.getCurrentUser().getUid())) {
-                            startDate = Long.parseLong(item.getValue().toString());
-                            Calendar today = Calendar.getInstance();
-                            today.set(today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH));
-                            long endDate = today.getTimeInMillis();
-
-                            long diff = endDate - startDate;
-                            int diffdays = (int) (diff / (1000*60*60*24));
-                            textView.setText(diffdays + " days of love");
-                            break;
-                        }
-                    }
+                    DataSnapshot item = dataSnapshot;
+                    startDate = Long.parseLong(item.getValue().toString());
+                    Calendar today = Calendar.getInstance();
+                    today.set(today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH));
+                    long endDate = today.getTimeInMillis();
+                    long diff = endDate - startDate;
+                    int diffdays = (int) (diff / (1000*60*60*24));
+                    textView.setText(diffdays + " days of love");
                 }
             }
+
+//        firebaseDatabase.child("dates").addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                if (dataSnapshot.exists()) {
+//                    for (DataSnapshot item : dataSnapshot.getChildren()) {
+//                        Log.w("item", item.toString());
+//                        if (item.getKey().equals(firebaseAuth.getCurrentUser().getUid())) {
+//                            startDate = Long.parseLong(item.getValue().toString());
+//                            Calendar today = Calendar.getInstance();
+//                            today.set(today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH));
+//                            long endDate = today.getTimeInMillis();
+//
+//                            long diff = endDate - startDate;
+//                            int diffdays = (int) (diff / (1000*60*60*24));
+//                            textView.setText(diffdays + " days of love");
+//                            break;
+//                        }
+//                    }
+//                }
+//            }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -148,7 +137,6 @@ public class HomeFragment extends Fragment {
 
         imageView = (ImageView) view.findViewById(R.id.fragment_home_imagebutton);
         String myuid = firebaseAuth.getCurrentUser().getUid();
-
         firebaseDatabase.child("users").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
