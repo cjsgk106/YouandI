@@ -103,9 +103,8 @@ public class ProfileActivity extends AppCompatActivity implements DatePickerDial
 
 
     }
-
-
     public void finishEdit(View view){
+        uploadImage();
 //        // convert bitmap to byte array
 //        Bitmap bitmap = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
 //        ByteArrayOutputStream ba = new ByteArrayOutputStream();
@@ -155,7 +154,6 @@ public class ProfileActivity extends AppCompatActivity implements DatePickerDial
                         );
                 bitmap = getResizedBitmap(bitmap, 450, 450);
                 imageView.setImageBitmap(bitmap);
-                uploadImage();
             } catch (IOException e) {
                 // Log the exception
                 e.printStackTrace();
@@ -178,7 +176,6 @@ public class ProfileActivity extends AppCompatActivity implements DatePickerDial
             StorageReference ref
                     = storageReference
                     .child("profileImages").child(firebaseAuth.getCurrentUser().getUid());
-
             // adding listeners on upload
             // or failure of image
             Task<Uri> urltask = ref.putFile(imageUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
@@ -201,13 +198,12 @@ public class ProfileActivity extends AppCompatActivity implements DatePickerDial
                         }
 
                     } else {
-//                        Toast.makeText(getActivity(),
-//                                "Failed " + task.getException(),
-//                                Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),
+                                "Failed " + task.getException(),
+                                Toast.LENGTH_SHORT).show();
                     }
                 }
             });
-
         }
     }
 
