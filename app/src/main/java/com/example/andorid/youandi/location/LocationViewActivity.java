@@ -22,6 +22,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,7 +33,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
-public class LocationViewActivity extends AppCompatActivity {
+public class LocationViewActivity extends FragmentActivity implements OnMapReadyCallback {
 
 
     ArrayList<LatLng> arrayList = new ArrayList<LatLng>();
@@ -49,24 +50,8 @@ public class LocationViewActivity extends AppCompatActivity {
 
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_map);
-        mapFragment.getMapAsync(googleMap -> {
-            mMap = googleMap;
-            mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                @Override
-                public void onMapClick(LatLng latLng) {
-                    MarkerOptions markerOptions = new MarkerOptions();
-                    markerOptions.position(latLng);
-                    markerOptions.title("Visited");
-                    mMap.clear();
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
-                    mMap.addMarker(markerOptions);
-                     lat = latLng.latitude;
-                     lon = latLng.longitude;
-                }
-            });
-        });
+        mapFragment.getMapAsync(this);
 
-        mapFragment.getMapAsync((OnMapReadyCallback) this);
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance().getReference();
@@ -83,12 +68,12 @@ public class LocationViewActivity extends AppCompatActivity {
                     firebaseDatabase.child("users").child(firebaseAuth.getCurrentUser().getUid()).child("Location").child("latitude").setValue(lata);
                     LatLng tmp = new LatLng(lat, lon);
                     arrayList.add(tmp);
-                    mMap.addMarker(new MarkerOptions().position(tmp).title("visited"));
+//                    mMap.addMarker(new MarkerOptions().position(tmp).title("visited"));
                 }else{
                     Toast.makeText(LocationViewActivity.this, "Need to pick a location", Toast.LENGTH_LONG).show();
                 }
 
-                }
+            }
         });
 
         Button inButton = (Button) findViewById(R.id.InButton);
@@ -105,22 +90,38 @@ public class LocationViewActivity extends AppCompatActivity {
                 mMap.animateCamera(CameraUpdateFactory.zoomOut());
             }
         });
+        Button showButton = (Button) findViewById(R.id.showButton);
+        showButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for(int i = 0; i < arrayList.size(); i ++){
+                    MarkerOptions markerOptions = new MarkerOptions();
+                    markerOptions.position(arrayList.get(i));
+                    markerOptions.title("visited");
+                    Marker marker = mMap.addMarker(markerOptions);
+                }
+            }
+        });
     }
 
 
-//    public void onMapReady(GoogleMap googleMap){
-//        mMap = googleMap;
-//
-//        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-//            @Override
-//            public void onMapClick(LatLng latLng) {
-//                MarkerOptions markerOptions = new MarkerOptions();
-//                markerOptions.position(latLng);
-//                markerOptions.title("Visited");
-//                mMap.clear();
-//                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
-//                mMap.addMarker(markerOptions);
-//            }
-//        });
-//    }
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+            mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                @Override
+                public void onMapClick(LatLng latLng) {
+                    MarkerOptions markerOptions = new MarkerOptions();
+                    markerOptions.position(latLng);
+                    markerOptions.title("Click Add");
+                    mMap.clear();
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+                    Marker marker = mMap.addMarker(markerOptions);
+//                    marker.remove();
+                    lat = latLng.latitude;
+                    lon = latLng.longitude;
+
+                }
+            });
+    }
 }

@@ -52,5 +52,14 @@
         android:id="@+id/OutButton"
         android:layout_toEndOf="@+id/InButton"
         android:text="Zoom Out" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="6dp"
+        android:layout_marginLeft="10dp"
+        android:id="@+id/showButton"
+        android:layout_toEndOf="@+id/OutButton"
+        android:text="Show" />
 
 </RelativeLayout>
