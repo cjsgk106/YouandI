@@ -13,9 +13,19 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorControlActivated"
         app:titleTextColor="@android:color/white"
-        ></androidx.appcompat.widget.Toolbar>
+        android:theme="@style/ToolbarTheme">
 
-    <ImageButton
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="toolbar title"
+            android:layout_gravity="center"
+            android:textSize="20dp"
+            android:textColor="@android:color/white"
+            android:id="@+id/fragment_hom_toolbartitle" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <ImageView
         android:id="@+id/fragment_home_imagebutton"
 
         android:layout_width="900px"
@@ -35,10 +45,10 @@
     app:srcCompat="@drawable/download"/>
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/fragment_hom_textview"
         android:layout_width="232dp"
-        android:layout_height="32dp"
-        android:text="Need to Edit Profile"
+        android:layout_height="wrap_content"
+        android:text="Choose the start date of your relationship"
         android:textSize="20dp"
         android:layout_gravity="center"
         android:textAlignment="center"

@@ -16,7 +16,6 @@
         <activity android:name=".location.LocationViewActivity" >
         </activity>
         <activity android:name=".chat.ChatFragment" />
-        <activity android:name=".Location_ViewActivity" />
         <activity android:name=".chat.ChatroomFragment" />
         <activity android:name=".chat.MessageActivity" />
         <activity android:name=".calendar.Calendar_EventActivity" />
@@ -25,7 +24,6 @@
         <activity android:name=".album.Album_PhotoActivity" />
         <activity android:name=".Main2Activity" />
         <activity android:name=".NavigationActivity" />
-        <activity android:name=".ProfileActivity" />
         <activity android:name=".SignupActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".MainActivity" >

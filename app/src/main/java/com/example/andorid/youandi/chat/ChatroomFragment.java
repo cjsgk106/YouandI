@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.andorid.youandi.R;
 import com.example.andorid.youandi.model.ChatModel;
 import com.example.andorid.youandi.model.UserModel;
@@ -90,7 +92,13 @@ public class ChatroomFragment extends Fragment {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     UserModel userModel = dataSnapshot.getValue(UserModel.class);
-                    //Glide.with(customViewHolder)
+                    if (!userModel.image.equals("")) {
+                        Glide.with
+                                (holder.itemView.getContext())
+                                .load(userModel.image)
+                                .apply(new RequestOptions().circleCrop())
+                                .into(customViewHolder.imageView);
+                    }
                     customViewHolder.textView_title.setText(userModel.userName);
                 }
                 @Override
