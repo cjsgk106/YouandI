@@ -15,19 +15,52 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
-        <activity android:name=".location.LocationViewActivity" >
+        <activity
+            android:name=".location.LocationViewActivity"
+            android:theme="@style/AppTheme">
         </activity>
-        <activity android:name=".chat.ChatFragment" />
-        <activity android:name=".chat.ChatroomFragment" />
-        <activity android:name=".chat.MessageActivity" />
-        <activity android:name=".calendar.Calendar_EventActivity" />
-        <activity android:name=".calendar.Calendar_EditActivity" />
-        <activity android:name=".FullimageActivity" />
-        <activity android:name=".album.Album_PhotoActivity" />
-        <activity android:name=".Main2Activity" />
-        <activity android:name=".NavigationActivity" />
-        <activity android:name=".SignupActivity" />
-        <activity android:name=".LoginActivity" />
+        <activity
+            android:name=".chat.ChatFragment"
+            android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".chat.ChatroomFragment"
+            android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".chat.MessageActivity"
+            android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".calendar.Calendar_EventActivity"
+            android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".calendar.Calendar_EditActivity"
+            android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".FullimageActivity"
+            android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".album.Album_PhotoActivity"
+            android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".album.AlbumFragment"
+            android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".calendar.CalendarFragment"
+            android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".location.LocationFragment"
+            android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".Main2Activity"
+            android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".NavigationActivity"
+            android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".SignupActivity"
+            android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".LoginActivity"
+            android:theme="@style/AppTheme"/>
         <activity android:name=".MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

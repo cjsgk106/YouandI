@@ -33,7 +33,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="24dp"
         android:adjustViewBounds="true"
-        tools:srcCompat="@tools:sample/avatars" />
+        android:src="@drawable/ic_add_a_photo_black_24dp" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -42,7 +42,6 @@
         android:layout_gravity="center"
         android:scaleType="fitXY"
         app:srcCompat="@drawable/heart" />
-    app:srcCompat="@drawable/download"/>
 
     <TextView
         android:id="@+id/fragment_hom_textview"
