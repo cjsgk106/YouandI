@@ -103,30 +103,9 @@ public class HomeFragment extends Fragment {
                     long endDate = today.getTimeInMillis();
                     long diff = endDate - startDate;
                     int diffdays = (int) (diff / (1000*60*60*24));
-                    textView.setText(diffdays + " days of love");
+                    textView.setText((diffdays+1) + " days of love");
                 }
             }
-
-//        firebaseDatabase.child("dates").addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                if (dataSnapshot.exists()) {
-//                    for (DataSnapshot item : dataSnapshot.getChildren()) {
-//                        Log.w("item", item.toString());
-//                        if (item.getKey().equals(firebaseAuth.getCurrentUser().getUid())) {
-//                            startDate = Long.parseLong(item.getValue().toString());
-//                            Calendar today = Calendar.getInstance();
-//                            today.set(today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH));
-//                            long endDate = today.getTimeInMillis();
-//
-//                            long diff = endDate - startDate;
-//                            int diffdays = (int) (diff / (1000*60*60*24));
-//                            textView.setText(diffdays + " days of love");
-//                            break;
-//                        }
-//                    }
-//                }
-//            }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {

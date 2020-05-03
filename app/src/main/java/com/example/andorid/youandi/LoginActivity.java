@@ -109,13 +109,4 @@ public class LoginActivity extends AppCompatActivity {
         firebaseAuth.removeAuthStateListener(authStateListener);
     }
 
-    public void clickFunction(View view){
-        goToAct1();
-
-    }
-
-    public void goToAct1(){
-        Intent intent = new Intent(this, NavigationActivity.class);
-        startActivity(intent);
-    }
 }
