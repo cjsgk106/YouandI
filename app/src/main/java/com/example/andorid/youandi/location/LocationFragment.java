@@ -18,14 +18,6 @@ public class LocationFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view= inflater.inflate(R.layout.fragment_location, container, false);
-        Button addbutton = view.findViewById(R.id.add_button);
-        addbutton.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
         Button viewbutton = view.findViewById(R.id.view_button);
         viewbutton.setOnClickListener(new Button.OnClickListener() {
             @Override
