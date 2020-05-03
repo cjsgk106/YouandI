@@ -43,6 +43,7 @@ public class Album_PhotoActivity extends AppCompatActivity {
     TextView textView;
     Uri imageUri;
     byte[] bytesImage;
+    Button cancel;
 
 //    LinearLayout layout;
 
@@ -56,6 +57,14 @@ public class Album_PhotoActivity extends AppCompatActivity {
         imageView = findViewById(R.id.newpic);
         btn = findViewById(R.id.pickPhoto);
         textView = findViewById(R.id.text);
+        cancel = findViewById(R.id.cancel);
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancel();
+            }
+        });
 
         btn.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -137,5 +146,10 @@ public class Album_PhotoActivity extends AppCompatActivity {
         ContentResolver cR = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cR.getType(uri));
+    }
+
+    public void cancel(){
+        Intent intent = new Intent(this, NavigationActivity.class);
+        startActivity(intent);
     }
 }

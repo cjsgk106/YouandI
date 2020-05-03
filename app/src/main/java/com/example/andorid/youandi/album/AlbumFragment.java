@@ -10,18 +10,36 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.example.andorid.youandi.NavigationActivity;
 import com.example.andorid.youandi.R;
 import com.example.andorid.youandi.album.Album_PhotoActivity;
+import com.example.andorid.youandi.model.ImageAdapter;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AlbumFragment extends Fragment {
+    RecyclerView mRecyclerView;
+    albumAdapter mAdapter;
+    DatabaseReference mDatabaseRef;
+    List<Upload> mUploads;
+
     ImageView imageView;
 
     @Nullable
@@ -29,19 +47,43 @@ public class AlbumFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_album, container, false);
 
-        // test ro bring image from firebase storage
-        imageView = view.findViewById(R.id.newpic);
-        long ONE_MEGABYTE = 1024* 1024;
-        StorageReference storageRef =  FirebaseStorage.getInstance().getReference();
-        StorageReference photoRef = storageRef.child("photo/1");
-        photoRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+        mRecyclerView = view.findViewById(R.id.recycler_view);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mUploads = new ArrayList<>();
+
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("album");
+
+        mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onSuccess(byte[] bytes) {
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                bitmap = getResizedBitmap(bitmap, 200, 200);
-                imageView.setImageBitmap(bitmap);
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot postSnapshot: dataSnapshot.getChildren()){
+                    Upload upload = postSnapshot.getValue(Upload.class);
+                    mUploads.add(upload);
+                }
+                mAdapter = new albumAdapter(getContext(), mUploads);
+                mRecyclerView.setAdapter(mAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getContext(), databaseError.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+
+        // test ro bring image from firebase storage
+//        imageView = view.findViewById(R.id.newpic);
+//        long ONE_MEGABYTE = 1024* 1024;
+//        StorageReference storageRef =  FirebaseStorage.getInstance().getReference();
+//        StorageReference photoRef = storageRef.child("photo/1");
+//        photoRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+//            @Override
+//            public void onSuccess(byte[] bytes) {
+//                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+//                bitmap = getResizedBitmap(bitmap, 200, 200);
+//                imageView.setImageBitmap(bitmap);
+//            }
+//        });
 
 
         Button button = (Button) view.findViewById(R.id.button);
@@ -49,7 +91,7 @@ public class AlbumFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), Album_PhotoActivity.class);
-                intent.putExtra("Date", "data");
+                intent.putExtra("Data", "data");
                 startActivity(intent);
             }
         });
@@ -68,21 +110,21 @@ public class AlbumFragment extends Fragment {
         return view;
     }
 
-    public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
-        int width = bm.getWidth();
-        int height = bm.getHeight();
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
-        // CREATE A MATRIX FOR THE MANIPULATION
-        Matrix matrix = new Matrix();
-        // RESIZE THE BIT MAP
-        matrix.postScale(scaleWidth, scaleHeight);
-
-        // "RECREATE" THE NEW BITMAP
-        Bitmap resizedBitmap = Bitmap.createBitmap(
-                bm, 0, 0, width, height, matrix, false);
-        bm.recycle();
-
-        return resizedBitmap;
-    }
+//    public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
+//        int width = bm.getWidth();
+//        int height = bm.getHeight();
+//        float scaleWidth = ((float) newWidth) / width;
+//        float scaleHeight = ((float) newHeight) / height;
+//        // CREATE A MATRIX FOR THE MANIPULATION
+//        Matrix matrix = new Matrix();
+//        // RESIZE THE BIT MAP
+//        matrix.postScale(scaleWidth, scaleHeight);
+//
+//        // "RECREATE" THE NEW BITMAP
+//        Bitmap resizedBitmap = Bitmap.createBitmap(
+//                bm, 0, 0, width, height, matrix, false);
+//        bm.recycle();
+//
+//        return resizedBitmap;
+//    }
 }

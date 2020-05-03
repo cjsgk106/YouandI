@@ -34,8 +34,8 @@
 
         <ImageView
             android:id="@+id/profile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="450px"
+            android:layout_height="450px"
             android:layout_marginTop="15dp"
             android:maxWidth="42dp"
             android:maxHeight="42dp"
