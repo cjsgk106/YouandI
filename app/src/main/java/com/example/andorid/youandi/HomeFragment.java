@@ -59,14 +59,9 @@ import static android.app.Activity.RESULT_OK;
 
 
 public class HomeFragment extends Fragment {
-    ImageButton btn;
     TextView textView;
-    String shared = "Shared";
 
     private FirebaseAuth firebaseAuth;
-    private StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-    private Uri imageUri;
-    private static final int PICK_FROM_ALBUM = 10;
     private ImageButton imageButton;
     private DatabaseReference firebaseDatabase;
 
@@ -77,13 +72,8 @@ public class HomeFragment extends Fragment {
 
         firebaseDatabase = FirebaseDatabase.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
-
-//        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(shared, Context.MODE_PRIVATE);
         textView = (TextView) view.findViewById(R.id.textView);
 
-//        if(sharedPreferences.getString("DATE", "") != ""){
-//            textView.setText(sharedPreferences.getString("DATE", ""));
-//        };
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.fragment_home_toolbar);
         toolbar.setBackgroundColor(Color.parseColor("#f7dce2"));
@@ -146,74 +136,5 @@ public class HomeFragment extends Fragment {
         return false;
     }
 }
-
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        if (requestCode == PICK_FROM_ALBUM
-//                && resultCode == RESULT_OK
-//                && data != null
-//                && data.getData() != null) {
-//
-//            // Get the Uri of data
-//            imageUri = data.getData();
-//            try {
-//                // Setting image on image view using Bitmap
-//                Bitmap bitmap = MediaStore
-//                        .Images
-//                        .Media
-//                        .getBitmap(getActivity().getApplicationContext().getContentResolver(),
-//                                imageUri
-//                        );
-//                imageButton.setImageBitmap(bitmap);
-//                uploadImage();
-//            }
-//
-//            catch (IOException e) {
-//                // Log the exception
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-
-//    private void uploadImage() {
-//        if (imageUri != null) {
-//
-//            StorageReference ref
-//                    = storageReference
-//                    .child("profileImages").child(firebaseAuth.getCurrentUser().getUid());
-//
-//            // adding listeners on upload
-//            // or failure of image
-//            Task<Uri> urltask = ref.putFile(imageUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-//                @Override
-//                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-//                    if (!task.isSuccessful()) {
-//                        throw task.getException();
-//                    }
-//                    return ref.getDownloadUrl();
-//                }
-//            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-//                @Override
-//                public void onComplete(@NonNull Task<Uri> task) {
-//                    if (task.isSuccessful()) {
-//                        Uri downloadUri = task.getResult();
-//                        Toast.makeText(getActivity(),
-//                                "Image Uploaded!!",
-//                                Toast.LENGTH_SHORT).show();
-//                        if (downloadUri != null) {
-//                            String profileImageUrl  = downloadUri.toString();
-//                            firebaseDatabase.child("users").child(firebaseAuth.getCurrentUser().getUid()).child("image").setValue(profileImageUrl);
-//                        }
-//                    } else {
-//                        Toast.makeText(getActivity(),
-//                                "Failed " + task.getException(),
-//                                Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//            });
-//        }
-//    }
 
 

@@ -49,7 +49,6 @@ public class Album_PhotoActivity extends AppCompatActivity {
     ImageView imageView;
     TextView textView;
     Uri imageUri;
-    byte[] bytesImage;
     Button cancel;
     private FirebaseAuth firebaseAuth;
     DatabaseReference mDatabaseRef;
