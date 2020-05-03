@@ -30,9 +30,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
+
 public class LocationViewActivity extends AppCompatActivity {
 
 
+    ArrayList<LatLng> arrayList = new ArrayList<LatLng>();
     private GoogleMap mMap;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference firebaseDatabase;
@@ -48,7 +51,6 @@ public class LocationViewActivity extends AppCompatActivity {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_map);
         mapFragment.getMapAsync(googleMap -> {
             mMap = googleMap;
-
             mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                 @Override
                 public void onMapClick(LatLng latLng) {
@@ -63,6 +65,9 @@ public class LocationViewActivity extends AppCompatActivity {
                 }
             });
         });
+
+        mapFragment.getMapAsync((OnMapReadyCallback) this);
+
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -73,10 +78,12 @@ public class LocationViewActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String lata = Double.toString(lat);
                 String lona = Double.toString(lon);
-                if(lona != null && lata != null){
+                if(lona.length() !=0 && lata.length() != 0){
                     firebaseDatabase.child("users").child(firebaseAuth.getCurrentUser().getUid()).child("Location").child("longitude").setValue(lona);
                     firebaseDatabase.child("users").child(firebaseAuth.getCurrentUser().getUid()).child("Location").child("latitude").setValue(lata);
-
+                    LatLng tmp = new LatLng(lat, lon);
+                    arrayList.add(tmp);
+                    mMap.addMarker(new MarkerOptions().position(tmp).title("visited"));
                 }else{
                     Toast.makeText(LocationViewActivity.this, "Need to pick a location", Toast.LENGTH_LONG).show();
                 }
