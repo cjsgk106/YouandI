@@ -11,6 +11,7 @@ import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -23,15 +24,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.andorid.youandi.NavigationActivity;
+import com.example.andorid.youandi.ProfileActivity;
 import com.example.andorid.youandi.R;
 import com.example.andorid.youandi.model.ImageAdapter;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -44,6 +51,9 @@ public class Album_PhotoActivity extends AppCompatActivity {
     Uri imageUri;
     byte[] bytesImage;
     Button cancel;
+    private FirebaseAuth firebaseAuth;
+    DatabaseReference mDatabaseRef;
+    StorageReference mStorageRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +64,9 @@ public class Album_PhotoActivity extends AppCompatActivity {
         btn = findViewById(R.id.pickPhoto);
         textView = findViewById(R.id.text);
         cancel = findViewById(R.id.cancel);
+        firebaseAuth = FirebaseAuth.getInstance();
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
+        mStorageRef = FirebaseStorage.getInstance().getReference();
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,60 +92,34 @@ public class Album_PhotoActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK && data != null){
             imageUri = data.getData();
-            Bitmap bitmap = null;
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            bitmap = getResizedBitmap(bitmap, imageView.getWidth(), imageView.getHeight());
-            imageView.setImageBitmap(bitmap);
+            Picasso.with(this)
+                    .load(imageUri)
+                    .fit()
+                    .centerCrop()
+                    .into(imageView);
         }}
 
-    public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
-        int width = bm.getWidth();
-        int height = bm.getHeight();
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
-        // CREATE A MATRIX FOR THE MANIPULATION
-        Matrix matrix = new Matrix();
-        // RESIZE THE BIT MAP
-        matrix.postScale(scaleWidth, scaleHeight);
-        // "RECREATE" THE NEW BITMAP
-        Bitmap resizedBitmap = Bitmap.createBitmap(
-                bm, 0, 0, width, height, matrix, false);
-        bm.recycle();
-        return resizedBitmap;
-    }
-
     public void finishEdit(View view){
-        StorageReference storageRef =  FirebaseStorage.getInstance().getReference("album");
-        StorageReference photoRef = storageRef.child(System.currentTimeMillis()+"."+getFileExtension(imageUri));
-        // new from here
-        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("album");
+         StorageReference fileRef =  mStorageRef.child(firebaseAuth.getCurrentUser().getUid()).child(System.currentTimeMillis()+"."+getFileExtension(imageUri));
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("users");
 
-        Bitmap bitmap = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
-        ByteArrayOutputStream ba = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, ba);
-        bytesImage = ba.toByteArray();
-
-        UploadTask uploadTask = photoRef.putBytes(bytesImage);
-//        UploadTask uploadTask = photoRef.putFile(imageUri);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
+        fileRef.putFile(imageUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(Album_PhotoActivity.this, "Upload failed", Toast.LENGTH_LONG).show();
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                return fileRef.getDownloadUrl();
             }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
             @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(Album_PhotoActivity.this, "Upload success", Toast.LENGTH_LONG).show();
-                Upload upload = new Upload(textView.getText().toString().trim(), taskSnapshot.getStorage().getDownloadUrl().toString());
-                String uploadId = dbRef.push().getKey();
-                dbRef.child(uploadId).setValue(upload);
+            public void onComplete(@NonNull Task<Uri> task) {
+                if(task.isSuccessful()){
+                    Uri downloadUri = task.getResult();
+                    Toast.makeText(Album_PhotoActivity.this, "Upload success", Toast.LENGTH_LONG).show();
+                    Upload upload = new Upload(textView.getText().toString().trim(), downloadUri.toString());
+                    String uploadId = dbRef.push().getKey();
+                    dbRef.child(firebaseAuth.getCurrentUser().getUid()).child("album").child(uploadId).setValue(upload);
+                }
             }
         });
-
         Intent intent = new Intent(this, NavigationActivity.class);
         startActivity(intent);
     }

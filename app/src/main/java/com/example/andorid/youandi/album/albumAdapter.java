@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.andorid.youandi.R;
 import com.example.andorid.youandi.model.ImageAdapter;
 import com.squareup.picasso.Picasso;
@@ -37,13 +38,14 @@ public class albumAdapter extends RecyclerView.Adapter<albumAdapter.ImageViewHol
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
         Upload uploadCurrent = mUploads.get(position);
         holder.textView.setText(uploadCurrent.getName());
-//        Log.w("kkkkkk", uploadCurrent.getImageUrl());
+        Log.w("kkk", uploadCurrent.getImageUrl());
         Picasso.with(mContext)
                 .load(uploadCurrent.getImageUrl())
                 .fit()
                 .placeholder(R.mipmap.ic_launcher)
                 .centerCrop()
                 .into(holder.imageView);
+
     }
 
     @Override

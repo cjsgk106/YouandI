@@ -17,6 +17,7 @@ import com.example.andorid.youandi.R;
 import com.example.andorid.youandi.album.Album_PhotoActivity;
 import com.example.andorid.youandi.model.ImageAdapter;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,8 +40,9 @@ public class AlbumFragment extends Fragment {
     albumAdapter mAdapter;
     DatabaseReference mDatabaseRef;
     List<Upload> mUploads;
+    private FirebaseAuth firebaseAuth;
 
-    ImageView imageView;
+//    ImageView imageView;
 
     @Nullable
     @Override
@@ -51,9 +53,8 @@ public class AlbumFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mUploads = new ArrayList<>();
-
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference("album");
-
+        firebaseAuth = FirebaseAuth.getInstance();
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("users").child(firebaseAuth.getCurrentUser().getUid()).child("album");
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

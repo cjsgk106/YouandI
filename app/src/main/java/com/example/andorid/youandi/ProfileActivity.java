@@ -78,7 +78,6 @@ public class ProfileActivity extends AppCompatActivity implements DatePickerDial
 
         String myuid = firebaseAuth.getCurrentUser().getUid();
 
-
         btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
