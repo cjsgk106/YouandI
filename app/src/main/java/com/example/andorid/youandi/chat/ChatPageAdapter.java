@@ -9,7 +9,7 @@ public class ChatPageAdapter extends FragmentPagerAdapter {
 
     private int numOfTabs;
 
-    private String[] tabTitles = new String[]{"FRIEND", "CHATROOM"};
+    private String[] tabTitles = new String[]{"PARTNER", "CHATROOM"};
 
     public ChatPageAdapter(@NonNull FragmentManager fm, int numOfTabs) {
         super(fm);

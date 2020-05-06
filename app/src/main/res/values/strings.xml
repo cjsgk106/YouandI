@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">YouAndI</string>
+    <string name="menu_partner">PARTNER</string>
+    <string name="menu_chatroom">CHATROOM</string>
 </resources>

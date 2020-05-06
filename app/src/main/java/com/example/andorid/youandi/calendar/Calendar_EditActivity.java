@@ -87,7 +87,7 @@ public class Calendar_EditActivity extends AppCompatActivity implements DatePick
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        String date = month + "/" + dayOfMonth + "/" + year;
+        String date = (month+1) + "/" + dayOfMonth + "/" + year;
         dateText.setText(date);
     }
 }
