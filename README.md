@@ -1,6 +1,6 @@
 # YouandI
 
-This is a all-in-one couple app that enables you and your partner to chat, share memories with photos, and count impoertant events like anniversary.
+This is an Android all-in-one couple app that enables you and your partner to chat, share memories with photos, and count impoertant events like anniversary.
 
 # Feature
 
