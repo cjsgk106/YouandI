@@ -1,63 +1,74 @@
 package com.example.andorid.youandi.location;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.location.Location;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.andorid.youandi.R;
-import com.example.andorid.youandi.calendar.Calendar_EditActivity;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class LocationViewActivity extends FragmentActivity implements OnMapReadyCallback {
 
 
-    ArrayList<LatLng> arrayList = new ArrayList<LatLng>();
+    ArrayList<String> arrayList = new ArrayList<>();
+    ArrayList<LatLng> locList = new ArrayList<>();
     private GoogleMap mMap;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference firebaseDatabase;
     private double lat;
     private double lon;
+    DatabaseReference reference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_view);
-
-
-
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_map);
         mapFragment.getMapAsync(this);
-
-
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance().getReference();
+        reference = firebaseDatabase.child("users").child(firebaseAuth.getCurrentUser().getUid()).child("Location");
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                arrayList.clear();
+                for(DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    String tmp=  snapshot.getValue().toString();
+                    arrayList.add(tmp);
+                }
+                for(int i=0; i < arrayList.size(); i++){
+                    String[] tmp2 = arrayList.get(i).split(" ");
+                    LatLng latLng = new LatLng(Double.valueOf(tmp2[0].substring(9, 26)), Double.valueOf(tmp2[1].substring(0,15)));
+                    locList.add(latLng);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
 
 
         Button addButton = (Button) findViewById(R.id.addButton);
@@ -67,10 +78,8 @@ public class LocationViewActivity extends FragmentActivity implements OnMapReady
                 String latlon = Double.toString(lat)+ " " + Double.toString(lon);
                 if(latlon.equals(" ")!= true ){
                     firebaseDatabase.child("users").child(firebaseAuth.getCurrentUser().getUid()).child("Location").push().child("lat&lon").setValue(latlon);
-//                    firebaseDatabase.child("users").child(firebaseAuth.getCurrentUser().getUid()).child("Location").push().child("latitude").setValue(lata);
                     LatLng tmp = new LatLng(lat, lon);
-                    arrayList.add(tmp);
-//                    mMap.addMarker(new MarkerOptions().position(tmp).title("visited"));
+                    locList.add(tmp);
                 }else{
                     Toast.makeText(LocationViewActivity.this, "Need to pick a location", Toast.LENGTH_LONG).show();
                 }
@@ -93,32 +102,22 @@ public class LocationViewActivity extends FragmentActivity implements OnMapReady
             }
         });
         Button showButton = (Button) findViewById(R.id.showButton);
-        DatabaseReference reference = firebaseDatabase.child("users").child(firebaseAuth.getCurrentUser().getUid()).child("Location").child("longitude");
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                arrayList.clear();
-                for(DataSnapshot snapshot: dataSnapshot.getChildren()){
-                      String tmp=  snapshot.getValue().toString();
-                      String [] tmp2 = tmp.split(" ");
-                      LatLng latLng = new LatLng(Double.valueOf(tmp2[0]), Double.valueOf(tmp2[1]));
-                      arrayList.add(latLng);
-                }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+
         showButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for(int i = 0; i < arrayList.size(); i ++){
+                BitmapDrawable bitmapdraw = (BitmapDrawable)getResources().getDrawable(R.drawable.heart);
+                Bitmap a = bitmapdraw.getBitmap();
+                Bitmap resized = Bitmap.createScaledBitmap(a, 100, 100,false);
+                for(int i = 0; i < locList.size(); i ++){
                     MarkerOptions markerOptions = new MarkerOptions();
-                    markerOptions.position(arrayList.get(i));
+                    markerOptions.position(locList.get(i));
                     markerOptions.title("visited");
+                    markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resized));
                     Marker marker = mMap.addMarker(markerOptions);
+
                 }
             }
         });
