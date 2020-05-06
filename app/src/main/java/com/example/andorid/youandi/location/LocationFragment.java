@@ -26,8 +26,6 @@ public class LocationFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
-
         return view;
     }
 }

@@ -9,5 +9,5 @@
         android:id="@+id/view_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Partner's Location" />
+        android:text="Go to Date Map" />
 </LinearLayout>
