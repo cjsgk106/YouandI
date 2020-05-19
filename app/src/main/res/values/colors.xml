@@ -4,4 +4,6 @@
     <color name="colorPrimaryDark">#f0f0f0</color>
     <color name="colorAccent">#f7dcf2</color>
     <color name="colorMenu">#ffffff</color>
+    <color name="white">#ffffff</color>
+    <color name="datecount">#fc567b</color>
 </resources>

@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,12 +45,14 @@ import static android.app.Activity.RESULT_OK;
 
 
 public class HomeFragment extends Fragment {
-    private TextView textView;
+    private TextView datecount_textview;
     private FirebaseAuth firebaseAuth;
     private StorageReference storageReference = FirebaseStorage.getInstance().getReference();
     private Uri imageUri;
     private static final int PICK_FROM_ALBUM = 10;
-    private ImageView imageView;
+    private ImageView coupleImageView;
+    private ImageView myImageView;
+    private ImageView yourImageView;
     private DatabaseReference firebaseDatabase;
     private DatePickerDialog picker;
     private long startDate;
@@ -70,8 +73,8 @@ public class HomeFragment extends Fragment {
         toolbarTitle.setText("YOU & I");
         setHasOptionsMenu(true);
 
-        textView = (TextView) view.findViewById(R.id.fragment_hom_textview);
-        textView.setOnClickListener(new View.OnClickListener() {
+        datecount_textview = (TextView) view.findViewById(R.id.fragment_home_textview_datecount);
+        datecount_textview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final Calendar cldr = Calendar.getInstance();
@@ -103,7 +106,10 @@ public class HomeFragment extends Fragment {
                     long endDate = today.getTimeInMillis();
                     long diff = endDate - startDate;
                     int diffdays = (int) (diff / (1000*60*60*24));
-                    textView.setText((diffdays+1) + " days of love");
+                    datecount_textview.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,0,0);
+                    datecount_textview.setText(Integer.toString(diffdays+1));
+                    datecount_textview.setTextSize(40);
+
                 }
             }
 
@@ -114,8 +120,8 @@ public class HomeFragment extends Fragment {
         });
 
 
-        imageView = (ImageView) view.findViewById(R.id.fragment_home_imagebutton);
-        String myuid = firebaseAuth.getCurrentUser().getUid();
+        coupleImageView = (ImageView) view.findViewById(R.id.fragment_home_imagebutton);
+    /*    String myuid = firebaseAuth.getCurrentUser().getUid();
         firebaseDatabase.child("users").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -139,10 +145,9 @@ public class HomeFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        }); */
 
-
-        imageView.setOnClickListener(new View.OnClickListener() {
+        coupleImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_PICK);
@@ -151,6 +156,42 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        myImageView = (ImageView) view.findViewById(R.id.fragment_home_mypicture);
+        String myuid = firebaseAuth.getCurrentUser().getUid();
+        firebaseDatabase.child("users").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot item : dataSnapshot.getChildren()) {
+                    UserModel userModel = item.getValue(UserModel.class);
+                    if (userModel.uid.equals(myuid)) {
+                        if (!userModel.image.equals("")) {
+                            Glide.with
+                                    (view)
+                                    .load(userModel.image)
+                                    .apply(new RequestOptions().circleCrop())
+                                    .into(myImageView);
+                        }
+                        break;
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        /*
+        myImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+                startActivityForResult(intent, PICK_FROM_ALBUM);
+            }
+        });*/
 
         return view;
     }
@@ -175,8 +216,8 @@ public class HomeFragment extends Fragment {
                         .getBitmap(getActivity().getApplicationContext().getContentResolver(),
                                 imageUri
                         );
-                imageView.setImageBitmap(bitmap);
-                uploadImage();
+                coupleImageView.setImageBitmap(bitmap);
+                //uploadImage();
             }
 
             catch (IOException e) {
@@ -243,6 +284,7 @@ public class HomeFragment extends Fragment {
                 startActivity(new Intent(getActivity(), LoginActivity.class));
                 return true;
             case R.id.action_setting:
+                startActivity(new Intent(getActivity(), SettingActivity.class));
                 return true;
         }
         return false;

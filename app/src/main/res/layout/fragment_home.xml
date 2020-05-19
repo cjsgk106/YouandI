@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".HomeFragment">
 
     <androidx.appcompat.widget.Toolbar
@@ -12,45 +11,77 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorControlActivated"
-        app:titleTextColor="@android:color/white"
-        android:theme="@style/ToolbarTheme">
+        android:theme="@style/ToolbarTheme"
+        app:titleTextColor="@android:color/white">
 
         <TextView
+            android:id="@+id/fragment_hom_toolbartitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="toolbar title"
             android:layout_gravity="center"
-            android:textSize="20dp"
+            android:text="toolbar title"
             android:textColor="@android:color/white"
-            android:id="@+id/fragment_hom_toolbartitle" />
+            android:textSize="20dp" />
     </androidx.appcompat.widget.Toolbar>
 
     <ImageView
         android:id="@+id/fragment_home_imagebutton"
-
+        android:layout_below="@+id/fragment_home_toolbar"
         android:layout_width="900px"
-        android:layout_height="900px"
-        android:layout_gravity="center"
+        android:layout_height="800px"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="24dp"
-        android:adjustViewBounds="true"
-        android:src="@drawable/ic_add_a_photo_black_24dp" />
+        android:src="@drawable/default_couple_icon" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/fragment_home_heart"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_gravity="center"
+        android:layout_below="@+id/fragment_home_imagebutton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
         android:scaleType="fitXY"
         app:srcCompat="@drawable/heart" />
 
+    <ImageView
+        android:id="@+id/fragment_home_mypicture"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/fragment_home_imagebutton"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="60dp"
+        android:src="@drawable/default_person_icon"/>
+
+    <ImageView
+        android:id="@+id/fragment_home_partnerpicture"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/fragment_home_imagebutton"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="250dp"
+        android:src="@drawable/default_person_icon" />
+
     <TextView
-        android:id="@+id/fragment_hom_textview"
+        android:id="@+id/fragment_home_textview_datecount"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragment_home_heart"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:textAlignment="center"
+        android:drawableBottom="@drawable/date_calendar_icon"
+        android:textStyle="bold"
+        android:textColor="@color/datecount"
+        android:textSize="15dp" />
+
+    <TextView
+        android:id="@+id/fragment_home_textview_daysoflove"
         android:layout_width="232dp"
         android:layout_height="wrap_content"
-        android:text="Choose the start date of your relationship"
-        android:textSize="20dp"
-        android:layout_gravity="center"
+        android:layout_below="@+id/fragment_home_textview_datecount"
+        android:layout_centerHorizontal="true"
+        android:text="Days of Love"
         android:textAlignment="center"
-        />
+        android:textSize="20dp" />
 
-</LinearLayout>
+</RelativeLayout>
