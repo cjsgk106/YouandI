@@ -145,7 +145,7 @@ public class HomeFragment extends Fragment {
         // Retrieve current user's name, profile picture, date
         myImageView = (ImageView) view.findViewById(R.id.fragment_home_mypicture);
         myname = (TextView) view.findViewById(R.id.fragment_home_textview_myname);
-        firebaseDatabase.child("users").child(myuid).addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseDatabase.child("users").child(myuid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot item : dataSnapshot.getChildren()) {
@@ -185,7 +185,7 @@ public class HomeFragment extends Fragment {
         // Retrieve partner's name and profile picture
         yourname = (TextView) view.findViewById(R.id.fragment_home_textview_yourname);
         yourImageView = (ImageView) view.findViewById(R.id.fragment_home_partnerpicture);
-        FirebaseDatabase.getInstance().getReference().child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("users").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {

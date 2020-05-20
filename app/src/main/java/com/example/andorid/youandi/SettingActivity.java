@@ -1,14 +1,18 @@
 package com.example.andorid.youandi;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,8 +37,11 @@ import java.io.IOException;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
-public class SettingActivity extends AppCompatActivity {
+public class SettingActivity extends AppCompatActivity implements View.OnClickListener, SettingDialogFragment.DialogListener{
 
     private static final int PICK_FROM_ALBUM = 10;
     private FirebaseAuth firebaseAuth;
@@ -49,6 +56,11 @@ public class SettingActivity extends AppCompatActivity {
     private TextView myPassword;
     private Button logout;
     private String currentUserImage;
+    private SettingDialogFragment settingDialogFragment;
+    private String myuid;
+    private String myUsername;
+    private Bundle bundle;
+    private LinearLayout nameLinearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +69,10 @@ public class SettingActivity extends AppCompatActivity {
 
         firebaseDatabase = FirebaseDatabase.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
-        String myuid = firebaseAuth.getCurrentUser().getUid();
+        myuid = firebaseAuth.getCurrentUser().getUid();
+
+        nameLinearLayout = (LinearLayout) findViewById(R.id.settingActivity_linearlayout_namelayout);
+        nameLinearLayout.setOnClickListener(this);
 
         myPicture = (ImageView) findViewById(R.id.settingActivity_imageview_picture);
         myPicture.setOnClickListener(new View.OnClickListener() {
@@ -103,7 +118,7 @@ public class SettingActivity extends AppCompatActivity {
         });
 
         myName = (TextView) findViewById(R.id.settingActivity_textview_name);
-        firebaseDatabase.child("users").child(myuid).child("userName").addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseDatabase.child("users").child(myuid).child("userName").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
@@ -148,7 +163,7 @@ public class SettingActivity extends AppCompatActivity {
         });
 
         myPassword = (TextView) findViewById(R.id.settingActivity_textview_changepw);
-
+        myPassword.setOnClickListener(this);
 
     }
 
@@ -224,4 +239,59 @@ public class SettingActivity extends AppCompatActivity {
 
         }
     }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.settingActivity_linearlayout_namelayout:
+                settingDialogFragment = new SettingDialogFragment();
+                bundle = new Bundle();
+                firebaseDatabase.child("users").child(myuid).child("userName").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        myUsername = dataSnapshot.getValue().toString();
+                        Log.d("ondatachange", myUsername);
+                        bundle.putString("name", myUsername);
+                        settingDialogFragment.setArguments(bundle);
+                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                        Fragment prev = getSupportFragmentManager().findFragmentByTag("dialog");
+                        if (prev != null) {
+                            ft.remove(prev);
+                        }
+                        ft.addToBackStack(null);
+                        settingDialogFragment.show(ft, "dialog");
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+                break;
+
+            /*case R.id.:
+                settingDialogFragment = new SettingDialogFragment();
+
+
+                ft = getSupportFragmentManager().beginTransaction();
+                prev = getSupportFragmentManager().findFragmentByTag("dialog");
+                if (prev != null) {
+                    ft.remove(prev);
+                }
+                ft.addToBackStack(null);
+
+
+                dialogFragment.show(ft, "dialog");
+                break;       */
+        }
+    }
+
+    @Override
+    public void onFinishEditDialog(String input) {
+        if (!TextUtils.isEmpty(input)) {
+            firebaseDatabase.child("users").child(myuid).child("userName").setValue(input);
+        }
+    }
+
 }
