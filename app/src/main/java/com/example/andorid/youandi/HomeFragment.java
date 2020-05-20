@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -47,6 +49,8 @@ import static android.app.Activity.RESULT_OK;
 
 public class HomeFragment extends Fragment {
     private TextView datecount_textview;
+    private TextView myname;
+    private TextView yourname;
     private FirebaseAuth firebaseAuth;
     private StorageReference storageReference = FirebaseStorage.getInstance().getReference();
     private Uri imageUri;
@@ -69,6 +73,7 @@ public class HomeFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         final String myuid = firebaseAuth.getCurrentUser().getUid();
 
+        // Handling Toolbar
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.fragment_home_toolbar);
         toolbar.setBackgroundColor(Color.parseColor("#f7dce2"));
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
@@ -77,6 +82,7 @@ public class HomeFragment extends Fragment {
         toolbarTitle.setText("YOU & I");
         setHasOptionsMenu(true);
 
+        // Count the number of dating days
         datecount_textview = (TextView) view.findViewById(R.id.fragment_home_textview_datecount);
         datecount_textview.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,8 +96,7 @@ public class HomeFragment extends Fragment {
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                         cldr.set(year, month, day);
                         startDate = cldr.getTimeInMillis();
-//                        firebaseDatabase.child("dates").setValue(startDate);
-                        firebaseDatabase.child("users").child(firebaseAuth.getCurrentUser().getUid()).child("dates").setValue(startDate);
+                        firebaseDatabase.child("users").child(myuid).child("dates").setValue(startDate);
                     }
                 }, year, month, day);
                 picker.getDatePicker().setMaxDate(System.currentTimeMillis());
@@ -99,31 +104,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        firebaseDatabase.child("users").child(myuid).child("dates").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    DataSnapshot item = dataSnapshot;
-                    startDate = Long.parseLong(item.getValue().toString());
-                    Calendar today = Calendar.getInstance();
-                    today.set(today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH));
-                    long endDate = today.getTimeInMillis();
-                    long diff = endDate - startDate;
-                    int diffdays = (int) (diff / (1000*60*60*24));
-                    datecount_textview.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,0,0);
-                    datecount_textview.setText(Integer.toString(diffdays+1));
-                    datecount_textview.setTextSize(40);
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-
+        // Handling main couple image
         coupleImageView = (ImageView) view.findViewById(R.id.fragment_home_imagebutton);
     /*    String myuid = firebaseAuth.getCurrentUser().getUid();
         firebaseDatabase.child("users").addValueEventListener(new ValueEventListener() {
@@ -160,22 +141,38 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        myImageView = (ImageView) view.findViewById(R.id.fragment_home_mypicture);
 
-        firebaseDatabase.child("users").child(myuid).child("image").addListenerForSingleValueEvent(new ValueEventListener() {
+        // Retrieve current user's name, profile picture, date
+        myImageView = (ImageView) view.findViewById(R.id.fragment_home_mypicture);
+        myname = (TextView) view.findViewById(R.id.fragment_home_textview_myname);
+        firebaseDatabase.child("users").child(myuid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    DataSnapshot item = dataSnapshot;
-                    currentUserImage = item.getValue().toString();
-                    if (!currentUserImage.equals("")) {
-                        Glide.with
-                                (view)
-                                .load(currentUserImage)
-                                .apply(new RequestOptions().circleCrop())
-                                .into(myImageView);
+                for (DataSnapshot item : dataSnapshot.getChildren()) {
+                    if (item.getKey().equals("image")) {
+                        currentUserImage = item.getValue().toString();
+                        if (!currentUserImage.equals("")) {
+                            Glide.with
+                                    (view)
+                                    .load(currentUserImage)
+                                    .apply(new RequestOptions().circleCrop())
+                                    .into(myImageView);
+                        }
                     }
-
+                    if (item.getKey().equals("userName")) {
+                        myname.setText(item.getValue().toString());
+                    }
+                    if (item.getKey().equals("dates")) {
+                        startDate = Long.parseLong(item.getValue().toString());
+                        Calendar today = Calendar.getInstance();
+                        today.set(today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH));
+                        long endDate = today.getTimeInMillis();
+                        long diff = endDate - startDate;
+                        int diffdays = (int) (diff / (1000*60*60*24));
+                        datecount_textview.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,0,0);
+                        datecount_textview.setText(Integer.toString(diffdays+1));
+                        datecount_textview.setTextSize(40);
+                    }
                 }
             }
 
@@ -185,6 +182,8 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        // Retrieve partner's name and profile picture
+        yourname = (TextView) view.findViewById(R.id.fragment_home_textview_yourname);
         yourImageView = (ImageView) view.findViewById(R.id.fragment_home_partnerpicture);
         FirebaseDatabase.getInstance().getReference().child("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -200,6 +199,7 @@ public class HomeFragment extends Fragment {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     UserModel userModel = snapshot.getValue(UserModel.class);
                     if (userModel.userId.equals(pemail)) {
+                        yourname.setText(userModel.userName);
                         if (!userModel.image.equals("")) {
                             Glide.with
                                     (view)
