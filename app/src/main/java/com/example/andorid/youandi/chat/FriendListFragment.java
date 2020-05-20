@@ -3,6 +3,7 @@ package com.example.andorid.youandi.chat;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,6 +35,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class FriendListFragment extends Fragment {
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -43,7 +45,6 @@ public class FriendListFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fragment_friendlist_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
         recyclerView.setAdapter(new ChatFragmentRecyclerViewAdapter());
-
         return view;
     }
 
@@ -71,10 +72,11 @@ public class FriendListFragment extends Fragment {
                     }
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         UserModel userModel = snapshot.getValue(UserModel.class);
-                        if (!userModel.userId.equals(pemail)) {
-                            continue;
+                        if (userModel.userId.equals(pemail)) {
+                            userModels.add(userModel);
+                            break;
                         }
-                        userModels.add(userModel);
+
                     }
                     notifyDataSetChanged();
                 }
@@ -90,7 +92,6 @@ public class FriendListFragment extends Fragment {
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_friend, parent, false);
-
             return new CustomViewHolder(view);
         }
 
@@ -104,7 +105,6 @@ public class FriendListFragment extends Fragment {
                         .into(((CustomViewHolder) holder).imageView);
             }
             ((CustomViewHolder)holder).textViewName.setText(userModels.get(position).userName);
-
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -132,5 +132,6 @@ public class FriendListFragment extends Fragment {
                 textViewName = (TextView) view.findViewById(R.id.item_friend_textview);
             }
         }
+
     }
 }

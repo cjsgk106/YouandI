@@ -33,12 +33,10 @@ public class ChatFragment extends Fragment {
         tabItemChat = (TabItem) view.findViewById(R.id.fragment_chat_tabitem_chatlist);
         viewPager = (ViewPager) view.findViewById(R.id.fragment_chat_viewpager);
 
-        ChatPageAdapter chatPageAdapter = new ChatPageAdapter(getActivity().getSupportFragmentManager(), tabLayout.getTabCount());
+        ChatPageAdapter chatPageAdapter = new ChatPageAdapter(getChildFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(chatPageAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setupWithViewPager(viewPager);
-
-
 
 
         return view;
