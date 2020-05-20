@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -56,6 +57,8 @@ public class HomeFragment extends Fragment {
     private DatabaseReference firebaseDatabase;
     private DatePickerDialog picker;
     private long startDate;
+    private String currentUserImage;
+    private String pemail;
 
     @Nullable
     @Override
@@ -64,6 +67,7 @@ public class HomeFragment extends Fragment {
 
         firebaseDatabase = FirebaseDatabase.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
+        final String myuid = firebaseAuth.getCurrentUser().getUid();
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.fragment_home_toolbar);
         toolbar.setBackgroundColor(Color.parseColor("#f7dce2"));
@@ -95,7 +99,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        firebaseDatabase.child("users").child(firebaseAuth.getCurrentUser().getUid()).child("dates").addValueEventListener(new ValueEventListener() {
+        firebaseDatabase.child("users").child(myuid).child("dates").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
@@ -157,23 +161,21 @@ public class HomeFragment extends Fragment {
         });
 
         myImageView = (ImageView) view.findViewById(R.id.fragment_home_mypicture);
-        String myuid = firebaseAuth.getCurrentUser().getUid();
-        firebaseDatabase.child("users").addValueEventListener(new ValueEventListener() {
+
+        firebaseDatabase.child("users").child(myuid).child("image").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot item : dataSnapshot.getChildren()) {
-                    UserModel userModel = item.getValue(UserModel.class);
-                    if (userModel.uid.equals(myuid)) {
-                        if (!userModel.image.equals("")) {
-                            Glide.with
-                                    (view)
-                                    .load(userModel.image)
-                                    .apply(new RequestOptions().circleCrop())
-                                    .into(myImageView);
-                        }
-                        break;
-
+                if (dataSnapshot.exists()) {
+                    DataSnapshot item = dataSnapshot;
+                    currentUserImage = item.getValue().toString();
+                    if (!currentUserImage.equals("")) {
+                        Glide.with
+                                (view)
+                                .load(currentUserImage)
+                                .apply(new RequestOptions().circleCrop())
+                                .into(myImageView);
                     }
+
                 }
             }
 
@@ -183,15 +185,40 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        /*
-        myImageView.setOnClickListener(new View.OnClickListener() {
+        yourImageView = (ImageView) view.findViewById(R.id.fragment_home_partnerpicture);
+        FirebaseDatabase.getInstance().getReference().child("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-                startActivityForResult(intent, PICK_FROM_ALBUM);
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    UserModel userModel = snapshot.getValue(UserModel.class);
+                    if (userModel.uid.equals(myuid)) {
+                        pemail = userModel.partnerEmail;
+                        break;
+                    }
+
+                }
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    UserModel userModel = snapshot.getValue(UserModel.class);
+                    if (userModel.userId.equals(pemail)) {
+                        if (!userModel.image.equals("")) {
+                            Glide.with
+                                    (view)
+                                    .load(userModel.image)
+                                    .apply(new RequestOptions().circleCrop())
+                                    .into(yourImageView);
+                        }
+                        break;
+                    }
+                }
+
             }
-        });*/
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
 
         return view;
     }

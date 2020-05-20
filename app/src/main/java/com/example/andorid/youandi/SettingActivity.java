@@ -44,6 +44,7 @@ public class SettingActivity extends AppCompatActivity {
     private ImageView addIcon;
     private EditText myName;
     private Button edit;
+    private String currentUserImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,7 @@ public class SettingActivity extends AppCompatActivity {
 
         firebaseDatabase = FirebaseDatabase.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
+        String myuid = firebaseAuth.getCurrentUser().getUid();
 
         myPicture = (ImageView) findViewById(R.id.settingActivity_imageview_picture);
         myPicture.setOnClickListener(new View.OnClickListener() {
@@ -63,23 +65,20 @@ public class SettingActivity extends AppCompatActivity {
             }
         });
 
-        String myuid = firebaseAuth.getCurrentUser().getUid();
-        firebaseDatabase.child("users").addValueEventListener(new ValueEventListener() {
+        firebaseDatabase.child("users").child(myuid).child("image").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot item : dataSnapshot.getChildren()) {
-                    UserModel userModel = item.getValue(UserModel.class);
-                    if (userModel.uid.equals(myuid)) {
-                        if (!userModel.image.equals("")) {
-                            Glide.with
-                                    (getApplicationContext())
-                                    .load(userModel.image)
-                                    .apply(new RequestOptions().circleCrop())
-                                    .into(myPicture);
-                        }
-                        break;
-
+                if (dataSnapshot.exists()) {
+                    DataSnapshot item = dataSnapshot;
+                    currentUserImage = item.getValue().toString();
+                    if (!currentUserImage.equals("")) {
+                        Glide.with
+                                (getApplicationContext())
+                                .load(currentUserImage)
+                                .apply(new RequestOptions().circleCrop())
+                                .into(myPicture);
                     }
+
                 }
             }
 
