@@ -41,27 +41,141 @@
             android:scaleType="centerCrop"
             android:src="@drawable/camera_icon"/>
     </androidx.cardview.widget.CardView>
-
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/settingActivity_edittext_namelayout"
+    
+    <LinearLayout
+        android:id="@+id/settingActivity_linearlayout_namelayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_below="@+id/settingActivity_cardview1">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/settingActivity_edittext_name"
+        android:layout_below="@id/settingActivity_cardview1"
+        android:layout_marginTop="40dp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/settingActivity_textview_nameex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:textColor="@color/colorAccent"
+            android:text="Name" />
+
+        <TextView
+            android:id="@+id/settingActivity_textview_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:hint="Neymar Jr" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="15dp"
+            android:background="@android:color/darker_gray" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/settingActivity_linearlayout_myemaillayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/settingActivity_linearlayout_namelayout"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/settingActivity_textview_myemailex"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Name" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:textSize="15dp"
+            android:textColor="@color/colorAccent"
+            android:text="My Email Address" />
 
-    <Button
-        android:id="@+id/settingActivity_button_edit"
-        android:text="EDIT"
+        <TextView
+            android:id="@+id/settingActivity_textview_myemail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="My Email Address" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="15dp"
+            android:background="@android:color/darker_gray" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/settingActivity_linearlayout_partneremaillayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/settingActivity_edittext_namelayout"/>
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/settingActivity_linearlayout_myemaillayout"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/settingActivity_textview_partneremailex"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:textColor="@color/colorAccent"
+            android:text="My Email Address" />
+
+        <TextView
+            android:id="@+id/settingActivity_textview_partneremail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="Partner's Email Address"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="15dp"
+            android:background="@android:color/darker_gray" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/settingActivity_linearlayout_changepwlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/settingActivity_linearlayout_partneremaillayout"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/settingActivity_textview_changepwex"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:textColor="@color/colorAccent"
+            android:text="Change Password"/>
+
+        <TextView
+            android:id="@+id/settingActivity_textview_changepw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="********" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="15dp"
+            android:background="@android:color/darker_gray" />
+
+    </LinearLayout>
+
+
+
+    <Button
+        android:id="@+id/settingActivity_button_logout"
+        android:text="LOG OUT"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/settingActivity_linearlayout_changepwlayout"/>
+
+    <Button
+        android:id="@+id/settingActivity_button_delete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="DELETE ACCOUNT"
+        android:layout_below="@+id/settingActivity_button_logout"
+        android:layout_marginTop="30dp" />
 
 </RelativeLayout>

@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -42,8 +43,11 @@ public class SettingActivity extends AppCompatActivity {
     private DatabaseReference firebaseDatabase;
     private ImageView myPicture;
     private ImageView addIcon;
-    private EditText myName;
-    private Button edit;
+    private TextView myName;
+    private TextView myEmail;
+    private TextView partnerEmail;
+    private TextView myPassword;
+    private Button logout;
     private String currentUserImage;
 
     @Override
@@ -98,16 +102,53 @@ public class SettingActivity extends AppCompatActivity {
             }
         });
 
-        myName = (EditText) findViewById(R.id.settingActivity_edittext_name);
-
-        edit = (Button) findViewById(R.id.settingActivity_button_edit);
-        edit.setOnClickListener(new View.OnClickListener() {
+        myName = (TextView) findViewById(R.id.settingActivity_textview_name);
+        firebaseDatabase.child("users").child(myuid).child("userName").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onClick(View view) {
-                uploadImage();
-                startActivity(new Intent(SettingActivity.this, NavigationActivity.class));
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    myName.setText(dataSnapshot.getValue().toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
+
+        myEmail = (TextView) findViewById(R.id.settingActivity_textview_myemail);
+        firebaseDatabase.child("users").child(myuid).child("userId").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    myEmail.setText(dataSnapshot.getValue().toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        partnerEmail = (TextView) findViewById(R.id.settingActivity_textview_partneremail);
+        firebaseDatabase.child("users").child(myuid).child("partnerEmail").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    partnerEmail.setText(dataSnapshot.getValue().toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        myPassword = (TextView) findViewById(R.id.settingActivity_textview_changepw);
+
 
     }
 
@@ -132,7 +173,7 @@ public class SettingActivity extends AppCompatActivity {
                                 imageUri
                         );
                 myPicture.setImageBitmap(bitmap);
-                //uploadImage();
+                uploadImage();
             }
 
             catch (IOException e) {
