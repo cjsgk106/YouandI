@@ -7,7 +7,7 @@
         android:layout_width="300dp"
         android:layout_height="80dp"
         android:scaleType="center"
-        android:text="Sign Up Information"
+        android:text="Account Information"
         android:textStyle="bold"
         android:textColor="@color/white"
         android:gravity="center"

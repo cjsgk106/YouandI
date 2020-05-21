@@ -8,28 +8,12 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:812211693982:android:c1fa400f12b84f6a3c0e8f",
+        "mobilesdk_app_id": "1:812211693982:android:8333d62c8632e6503c0e8f",
         "android_client_info": {
-          "package_name": "com.example.andorid.youandi"
+          "package_name": "com.gerrard.android.youandi"
         }
       },
       "oauth_client": [
-        {
-          "client_id": "812211693982-a0nvacibq0s8fqhvt1sdngpbja67s4am.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.andorid.youandi",
-            "certificate_hash": "6e9af92edadadd698b1879254a10347e21306ec9"
-          }
-        },
-        {
-          "client_id": "812211693982-jden783r1nvnm6484do9mne0n6dojq4e.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.andorid.youandi",
-            "certificate_hash": "8f53b63fa240c9b627b6c679d6ac7f8150966bd0"
-          }
-        },
         {
           "client_id": "812211693982-ptp6hiehh8fiorqauvd8p1qln233vbl0.apps.googleusercontent.com",
           "client_type": 3

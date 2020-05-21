@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.andorid.youandi">
+    package="com.gerrard.android.youandi">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -8,61 +8,61 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".MyApplication"
+        android:name="com.gerrard.android.youandi.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginDialogFragment"></activity>
-        <activity android:name=".SettingActivity" />
+        <activity android:name="com.gerrard.android.youandi.LoginDialogFragment"></activity>
+        <activity android:name="com.gerrard.android.youandi.SettingActivity" />
         <activity
-            android:name=".location.LocationViewActivity"
+            android:name="com.gerrard.android.youandi.location.LocationViewActivity"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".chat.ChatFragment"
+            android:name="com.gerrard.android.youandi.chat.ChatFragment"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".chat.ChatroomFragment"
+            android:name="com.gerrard.android.youandi.chat.ChatroomFragment"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".chat.MessageActivity"
+            android:name="com.gerrard.android.youandi.chat.MessageActivity"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".calendar.Calendar_EventActivity"
+            android:name="com.gerrard.android.youandi.calendar.Calendar_EventActivity"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".calendar.Calendar_EditActivity"
+            android:name="com.gerrard.android.youandi.calendar.Calendar_EditActivity"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".FullimageActivity"
+            android:name="com.gerrard.android.youandi.FullimageActivity"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".album.Album_PhotoActivity"
+            android:name="com.gerrard.android.youandi.album.Album_PhotoActivity"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".album.AlbumFragment"
+            android:name="com.gerrard.android.youandi.album.AlbumFragment"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".calendar.CalendarFragment"
+            android:name="com.gerrard.android.youandi.calendar.CalendarFragment"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".location.LocationFragment"
+            android:name="com.gerrard.android.youandi.location.LocationFragment"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".Main2Activity"
+            android:name="com.gerrard.android.youandi.Main2Activity"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".NavigationActivity"
+            android:name="com.gerrard.android.youandi.NavigationActivity"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".SignupActivity"
+            android:name="com.gerrard.android.youandi.SignupActivity"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".LoginActivity"
+            android:name="com.gerrard.android.youandi.LoginActivity"
             android:theme="@style/AppTheme" />
-        <activity android:name=".MainActivity">
+        <activity android:name="com.gerrard.android.youandi.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

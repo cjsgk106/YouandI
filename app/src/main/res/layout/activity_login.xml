@@ -60,7 +60,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Sign In with Other Method"
+        android:hint="Sign in with other methods"
         android:layout_marginTop="20dp"
         />
 
@@ -72,7 +72,7 @@
         app:cardElevation="4dp"
         app:cardUseCompatPadding="true">
 
-        <com.example.andorid.youandi.CustomLoginButton
+        <com.gerrard.android.youandi.CustomLoginButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/loginActivity_button_login_google"
@@ -89,7 +89,7 @@
         app:cardElevation="4dp"
         app:cardUseCompatPadding="true">
 
-        <com.example.andorid.youandi.CustomLoginButton
+        <com.gerrard.android.youandi.CustomLoginButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/loginActivity_button_login_naver"
@@ -106,7 +106,7 @@
         android:layout_gravity="center_horizontal"
         app:cardUseCompatPadding="true">
 
-        <com.example.andorid.youandi.CustomLoginButton
+        <com.gerrard.android.youandi.CustomLoginButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/loginActivity_button_login_facebook"
