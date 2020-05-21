@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/custom_login_linearlayout"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="55dp"
+    android:background="@color/white"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/custom_login_imageview"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_gravity="center_vertical"
+        android:background="@color/white"
+        android:layout_marginLeft="20dp"
+        android:src="@drawable/login_google_symbol"
+        />
+
+    <TextView
+        android:id="@+id/custom_login_textview"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="Google"
+        android:textSize="20dp"
+        android:textColor="@color/datecount"
+        android:textStyle="bold"/>
+
+</LinearLayout>

@@ -6,4 +6,6 @@
     <color name="colorMenu">#ffffff</color>
     <color name="white">#ffffff</color>
     <color name="datecount">#fc567b</color>
+    <color name="colorFacebook">#3B5998</color>
+    <color name="colorNaver">#1EC800</color>
 </resources>
