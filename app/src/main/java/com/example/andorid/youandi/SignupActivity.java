@@ -93,7 +93,7 @@ public class SignupActivity extends AppCompatActivity {
 
     private boolean validateForm() {
         boolean result = true;
-        if (TextUtils.isEmpty(email.getText().toString())) {
+        if (TextUtils.isEmpty(email.getText().toString()) || !isEmailValid(email.getText().toString())) {
             email.setError("Required");
             result = false;
         } else {
@@ -114,8 +114,16 @@ public class SignupActivity extends AppCompatActivity {
             name.setError(null);
         }
 
-
-
+        if (TextUtils.isEmpty(partneremail.getText().toString()) || !isEmailValid(email.getText().toString())) {
+            partneremail.setError("Required");
+            result = false;
+        } else {
+            partneremail.setError(null);
+        }
         return result;
+    }
+
+    private boolean isEmailValid(CharSequence email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 }

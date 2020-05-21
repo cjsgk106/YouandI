@@ -114,7 +114,7 @@
             android:layout_height="wrap_content"
             android:textSize="15dp"
             android:textColor="@color/colorAccent"
-            android:text="My Email Address" />
+            android:text="Partner's Email Address" />
 
         <TextView
             android:id="@+id/settingActivity_textview_partneremail"

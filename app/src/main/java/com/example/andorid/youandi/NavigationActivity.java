@@ -3,9 +3,11 @@ package com.example.andorid.youandi;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 
 import com.example.andorid.youandi.album.AlbumFragment;
@@ -13,8 +15,20 @@ import com.example.andorid.youandi.calendar.CalendarFragment;
 import com.example.andorid.youandi.chat.ChatFragment;
 import com.example.andorid.youandi.location.LocationFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-public class NavigationActivity extends AppCompatActivity {
+public class NavigationActivity extends AppCompatActivity implements LoginDialogFragment.DialogListener{
+
+    private LoginDialogFragment loginDialogFragment;
+    private DatabaseReference firebaseDatabase;
+    private FirebaseAuth firebaseAuth;
+    private String myuid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +40,32 @@ public class NavigationActivity extends AppCompatActivity {
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new HomeFragment()).commit();
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        myuid = firebaseAuth.getCurrentUser().getUid();
+        firebaseDatabase = FirebaseDatabase.getInstance().getReference();
+        firebaseDatabase.child("users").child(myuid).orderByKey().equalTo("userName").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()) {
+                    loginDialogFragment = new LoginDialogFragment();
+                    loginDialogFragment.setCancelable(false);
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    Fragment prev = getSupportFragmentManager().findFragmentByTag("dialog");
+                    if (prev != null) {
+                        ft.remove(prev);
+                    }
+                    ft.addToBackStack(null);
+                    loginDialogFragment.show(ft, "dialog");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -63,5 +103,16 @@ public class NavigationActivity extends AppCompatActivity {
     public static Context getContextOfApplication()
     {
         return contextOfApplication;
+    }
+
+
+    @Override
+    public void onFinishEditDialog(String name, String email) {
+        if (!TextUtils.isEmpty(name)) {
+            firebaseDatabase.child("users").child(myuid).child("userName").setValue(name);
+        }
+        if (!TextUtils.isEmpty(email)) {
+            firebaseDatabase.child("users").child(myuid).child("partnerEmail").setValue(email);
+        }
     }
 }
