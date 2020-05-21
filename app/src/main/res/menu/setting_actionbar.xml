@@ -3,12 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:title="Logout"
-        android:id="@+id/action_logout"
-        />
-
-    <item
         android:id="@+id/action_setting"
         android:title="Setting"
+        android:icon="@drawable/setting_icon"
+        android:iconTint="@color/white"
+
+        app:showAsAction="always"
         />
 </menu>

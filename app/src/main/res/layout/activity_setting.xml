@@ -47,7 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/settingActivity_cardview1"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:orientation="vertical">
         <TextView
             android:id="@+id/settingActivity_textview_nameex"
@@ -165,7 +165,7 @@
     <Button
         android:id="@+id/settingActivity_button_logout"
         android:text="LOG OUT"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/settingActivity_linearlayout_changepwlayout"/>
@@ -176,6 +176,6 @@
         android:layout_height="wrap_content"
         android:text="DELETE ACCOUNT"
         android:layout_below="@+id/settingActivity_button_logout"
-        android:layout_marginTop="30dp" />
+        android:layout_marginTop="10dp" />
 
 </RelativeLayout>

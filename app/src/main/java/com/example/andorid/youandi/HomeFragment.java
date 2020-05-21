@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -43,6 +44,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import static android.app.Activity.RESULT_OK;
 
@@ -299,17 +301,15 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.setting_actionbar, menu);
+        Drawable drawable = menu.findItem(R.id.action_setting).getIcon();
+        DrawableCompat.setTint(DrawableCompat.wrap(drawable), getContext().getResources().getColor(R.color.white, getContext().getTheme()));
+
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case R.id.action_logout:
-                firebaseAuth = firebaseAuth.getInstance();
-                firebaseAuth.signOut();
-                startActivity(new Intent(getActivity(), LoginActivity.class));
-                return true;
             case R.id.action_setting:
                 startActivity(new Intent(getActivity(), SettingActivity.class));
                 return true;
