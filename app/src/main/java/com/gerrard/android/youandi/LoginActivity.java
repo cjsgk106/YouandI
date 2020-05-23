@@ -28,8 +28,9 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.nhn.android.naverlogin.OAuthLogin;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, NaverLoginHandler.UserInfoListener {
 
     private static final String TAG = "LoginActivity";
     private static final int RC_SIGN_IN = 1001;
@@ -130,6 +131,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         firebaseAuth = FirebaseAuth.getInstance();
     }
 
+    public void signInToNaver() {
+        OAuthLogin mOAuthLoginModule = OAuthLogin.getInstance();
+        mOAuthLoginModule.init(
+                LoginActivity.this
+                ,getString(R.string.Naver_OAUTH_CLIENT_ID)
+                ,getString(R.string.Naver_OAUTH_CLIENT_SECRET)
+                ,getString(R.string.app_name)
+                //,OAUTH_CALLBACK_INTENT
+                // SDK 4.1.4 버전부터는 OAUTH_CALLBACK_INTENT변수를 사용하지 않습니다.
+        );
+     /*   if (mOAuthLoginModule.getAccessToken(this) != null) {
+            startActivity(new Intent(this,MainActivity.class));
+            finish();
+        } else {*/
+        mOAuthLoginModule.startOauthLoginActivity(this, new NaverLoginHandler(this, mOAuthLoginModule));
+
+        // }
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -183,6 +203,27 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 });
     }
 
+    private void firebaseAuthWithNaver(String naverToken) {
+        firebaseAuth.signInWithCustomToken(naverToken)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithCustomToken:success");
+                            FirebaseUser user = firebaseAuth.getCurrentUser();
+                            updateUI(user);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithCustomToken:failure", task.getException());
+                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                            updateUI(null);
+                        }
+                    }
+                });
+    }
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -202,8 +243,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 signInToGoogle();
                 break;
             case R.id.loginActivity_button_login_naver:
+                //signInToNaver();
+                Toast.makeText(LoginActivity.this, "COMING SOON!", Toast.LENGTH_LONG).show();
                 break;
             case R.id.loginActivity_button_login_facebook:
+                Toast.makeText(LoginActivity.this, "COMING SOON!", Toast.LENGTH_LONG).show();
                 break;
         }
     }
@@ -217,6 +261,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         } else {
 
         }
+    }
+
+    @Override
+    public void passUserInfo(String token) {
+        // This is getting wrong token. Custom token needed.
+        firebaseAuthWithNaver(token);
     }
 
 }
