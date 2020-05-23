@@ -11,10 +11,15 @@ With this app, you can
 - Check how long you have been dating.
 - Add markers on a map to see where you have visited with your partner.
 
+# Photos
+
+
 # How to use this source
 Since this application uses Google Firebase API, you need to get your own API key to launch the application.
 <br>
 Since this application uses Goggle Map API, you need to get your own API key to launch the application.
+<br>
+You are going to need to get Naver OAuth Client ID & Client Secret Key.
 
 # Libraries
 - [picasso](https://github.com/square/picasso) - for loading and caching images
